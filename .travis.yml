@@ -1,6 +1,5 @@
 language: python
 python:
-  - "3.4"
   - "3.5"
   - "3.6"
 
@@ -12,4 +11,4 @@ install:
 
 script:
   - pipenv check
-  - pipenv run python pytest
+  - pipenv run pytest
