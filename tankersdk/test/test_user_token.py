@@ -9,43 +9,38 @@ from tankersdk.crypto import BLOCK_HASH_SIZE, CHECK_HASH_BLOCK_SIZE, USER_SECRET
 from tankersdk.test.helpers import corrupt_buffer
 
 
-TRUSTCHAIN_ID = b"AzES0aJwDCej9bQVY9AUMZBCLdX0msEc/TJ4DOhZaQs="
-TRUSTCHAIN_PUBLIC_KEY = b"dOeLBpHz2IF37UQkS36sXomqEcEAjSyCsXZ7irn9UQA="
-TRUSTCHAIN_PRIVATE_KEY = b"cBAq6A00rRNVTHicxNHdDFuq6LNUo6gAz58oKqy9CGd054sGkfPYgXftRCRLfqxeiaoRwQCNLIKxdnuKuf1RAA=="
-
-
 def parse_b64_token(b64_token):
     json_token = base64.b64decode(b64_token)
     token = json.loads(json_token.decode())
     return token
 
 
-def generate_test_token():
+def generate_test_token(test_trustchain):
     user_id = "guido@tanker.io"
     b64_token = tankersdk.usertoken.generate_user_token(
-        TRUSTCHAIN_ID,
-        TRUSTCHAIN_PRIVATE_KEY,
+        test_trustchain["id"],
+        test_trustchain["private_key"],
         user_id
     )
     token = parse_b64_token(b64_token)
     return token
 
 
-def test_generate_token_happy():
-    token = generate_test_token()
+def test_generate_token_happy(test_trustchain):
+    token = generate_test_token(test_trustchain)
     delegation_signature = base64.b64decode(token["delegation_signature"])
 
     check_user_secret(token)
-    check_signature(token, delegation_signature)
+    check_signature(test_trustchain["public_key"], token, delegation_signature)
 
 
-def test_generate_token_invalid_signature():
-    token = generate_test_token()
+def test_generate_token_invalid_signature(test_trustchain):
+    token = generate_test_token(test_trustchain)
     delegation_signature = base64.b64decode(token["delegation_signature"])
     invalid_signature = corrupt_buffer(delegation_signature)
 
     with pytest.raises(tankersdk.crypto.InvalidSignature):
-        check_signature(token, invalid_signature)
+        check_signature(test_trustchain["public_key"], token, invalid_signature)
 
 
 def check_user_secret(token):
@@ -59,9 +54,9 @@ def check_user_secret(token):
     assert user_secret[-1] == control[0]
 
 
-def check_signature(token, signature):
+def check_signature(public_key, token, signature):
     e_pub_key = base64.b64decode(token["ephemeral_public_signature_key"])
     user_id = base64.b64decode(token["user_id"])
     signed_data = e_pub_key + user_id
-    verify_key = base64.b64decode(TRUSTCHAIN_PUBLIC_KEY)
+    verify_key = base64.b64decode(public_key)
     tankersdk.crypto.verify_sign_detached(signed_data, signature, verify_key)

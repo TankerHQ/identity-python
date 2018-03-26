@@ -1,4 +1,4 @@
-flask server example
+Flask server example
 ====================
 
 Installation
@@ -7,7 +7,7 @@ Installation
 .. code-block:: console
 
     $ pip install flask
-    $ pip install git+https://github.com/supertanker/user-token-python@master
+    $ pip install tankersdk-user-token
 
 
 Usage

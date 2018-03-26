@@ -11,11 +11,8 @@ With `pip`:
 
 .. code-block:: console
 
-    $ pip install git+https://github.com/supertanker/user-token-python@master
+    $ pip install tankersdk-user-token
 
-.. note::
-
-    This module depends on `pysodium <https://github.com/stef/pysodium>`_, which in turn depends on `libsodium`. Make sure to have `libsodium` installed on your system first.
 
 Usage
 -----
@@ -26,7 +23,7 @@ Usage
 
       import tankersdk.usertoken
 
-      def retrieve_token(user_id):
+      def retrieve_user_token(user_id):
           """ Fetch a previously stored token """
           ...
 
@@ -46,19 +43,19 @@ Usage
           if not authorized:
               raise UnAuthorizedError()
 
-          token = retrieve_token()
+          token = retrieve_user_token(user_id)
 
           if not token:
             tankersdk.usertoken.generate_user_token(trustchain_id, trustchain_private_key, user_id)
-            store_user_token()
+            store_user_token(user_id, token)
 
-          return user_token
+          return token
 
 
-Going furtnher
---------------
+Going further
+-------------
 
 
 Read more about user tokens in the `Tanker guide <https://tanker.io/docs/latest/guide/server/>`_.
 
-Check the `examples <https://github.com/SuperTanker/user-token-python/examples>`_ folder for usage examples.
+Check the `examples <https://github.com/SuperTanker/user-token-python/tree/master/examples>`_ folder for usage examples.

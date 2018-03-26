@@ -6,7 +6,7 @@ from tankersdk.crypto import BLOCK_HASH_SIZE, CHECK_HASH_BLOCK_SIZE, USER_SECRET
 import tankersdk.crypto
 
 
-def generate_user_token(trustchain_id, trustchain_private_key, user_id):
+def generate_user_token(trustchain_id: str, trustchain_private_key: str, user_id: str) -> str:
     trustchain_id_buf = base64.b64decode(trustchain_id)
     private_key_buf = base64.b64decode(trustchain_private_key)
 

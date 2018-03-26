@@ -1,6 +1,6 @@
 import flask
-import path
 import json
+import os
 
 import tankersdk.usertoken
 
@@ -10,8 +10,10 @@ app.debug = True
 
 # TODO: ensure config is stored in a secure place
 def load_config():
-    top_path = path.Path(".").abspath().parent
-    trustchain_config = json.loads(top_path.joinpath("config-trustchain.json").text())
+    current_path = os.getcwd()
+    json_path = os.path.join(current_path, "../config-trustchain.json")
+    with open(json_path) as stream:
+        trustchain_config = json.load(stream)
     app.config["TANKER"] = trustchain_config
 
 
@@ -43,9 +45,10 @@ def user_token():
         tanker_config = app.config["TANKER"]
         trustchain_id = tanker_config["trustchainId"]
         trustchain_private_key = tanker_config["trustchainPrivateKey"]
-        user_token = tankersdk.usertoken.generate_user_token(
+        token = tankersdk.usertoken.generate_user_token(
             trustchain_id,
             trustchain_private_key,
             user_id
         )
-        return user_token
+
+    return token
