@@ -12,4 +12,4 @@ install:
 
 script:
   - pipenv check
-  - pipenv run python pytest
+  - pipenv run pytest
