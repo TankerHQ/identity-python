@@ -3,7 +3,7 @@ User Token
 
 .. image:: https://travis-ci.org/SuperTanker/user-token-python.svg?branch=master
     :target: https://travis-ci.org/SuperTanker/user-token-python
-    
+
 User token generation in Python3 for the `Tanker SDK <https://tanker.io/docs/latest>`_.
 
 Installation
@@ -36,6 +36,11 @@ Usage
           ...
 
 
+       def check_auth(user_id):
+          """ Check the user is authenticated """
+          ...
+
+
       def serve_user_token(user_id):
           """ Called during sign/up sign in of your users.
 
@@ -49,7 +54,7 @@ Usage
           token = retrieve_user_token(user_id)
 
           if not token:
-            tankersdk.usertoken.generate_user_token(trustchain_id, trustchain_private_key, user_id)
+            token = tankersdk.usertoken.generate_user_token(trustchain_id, trustchain_private_key, user_id)
             store_user_token(user_id, token)
 
           return token
