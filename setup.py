@@ -9,7 +9,7 @@ setup(name="tankersdk-user-token",
       version="0.2",
       description="Tanker user token library",
       long_description="Building blocks to create your own user token server to use with the Tanker SDK",
-      url="https://github.com/SuperTanker/user-token-python",
+      url="https://github.com/TankerHQ/user-token-python",
       author="Kontrol SAS",
       packages=[
           "tankersdk.crypto",
