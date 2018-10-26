@@ -1,8 +1,8 @@
 User Token
 ==========
 
-.. image:: https://travis-ci.org/SuperTanker/user-token-python.svg?branch=master
-    :target: https://travis-ci.org/SuperTanker/user-token-python
+.. image:: https://travis-ci.org/TankerHQ/user-token-python.svg?branch=master
+    :target: https://travis-ci.org/TankerHQ/user-token-python
 
 User token generation in Python3 for the `Tanker SDK <https://tanker.io/docs/latest>`_.
 
@@ -66,4 +66,4 @@ Going further
 
 Read more about user tokens in the `Tanker guide <https://tanker.io/docs/latest/guide/server/>`_.
 
-Check the `examples <https://github.com/SuperTanker/user-token-python/tree/master/examples>`_ folder for usage examples.
+Check the `examples <https://github.com/TankerHQ/user-token-python/tree/master/examples>`_ folder for usage examples.
