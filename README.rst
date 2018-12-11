@@ -1,10 +1,14 @@
 User Token
 ==========
 
+User token generation in Python for the `Tanker SDK <https://tanker.io/docs/latest>`_.
+
 .. image:: https://travis-ci.org/TankerHQ/user-token-python.svg?branch=master
     :target: https://travis-ci.org/TankerHQ/user-token-python
 
-User token generation in Python for the `Tanker SDK <https://tanker.io/docs/latest>`_.
+.. image:: https://img.shields.io/pypi/v/tankersdk-user-token.svg
+    :target: https://pypi.org/project/tankersdk-user-token
+
 
 Installation
 ------------
