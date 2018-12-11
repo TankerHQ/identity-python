@@ -4,7 +4,7 @@ User Token
 .. image:: https://travis-ci.org/TankerHQ/user-token-python.svg?branch=master
     :target: https://travis-ci.org/TankerHQ/user-token-python
 
-User token generation in Python3 for the `Tanker SDK <https://tanker.io/docs/latest>`_.
+User token generation in Python for the `Tanker SDK <https://tanker.io/docs/latest>`_.
 
 Installation
 ------------
