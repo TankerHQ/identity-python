@@ -1,5 +1,3 @@
-from typing import Tuple
-
 from nacl.exceptions import BadSignatureError
 from nacl.bindings.crypto_sign import crypto_sign, crypto_sign_keypair, crypto_sign_open, crypto_sign_BYTES
 from nacl.bindings.crypto_generichash import generichash_blake2b_salt_personal
@@ -18,18 +16,18 @@ class InvalidSignature(Error):
     pass
 
 
-def generichash(buffer: bytes, *, size: int) -> bytes:
+def generichash(buffer, size):
     return generichash_blake2b_salt_personal(buffer, digest_size=size)
 
 
-def sign_keypair() -> Tuple[bytes, bytes]:
+def sign_keypair():
     """
     Generate a pair of signing keys and return a tuple (public_key, private_key)
     """
     return crypto_sign_keypair()
 
 
-def sign_detached(message: bytes, private_key: bytes) -> bytes:
+def sign_detached(message, private_key):
     """
     Sign a message with a private key and return the detached signature
     """
@@ -37,7 +35,7 @@ def sign_detached(message: bytes, private_key: bytes) -> bytes:
     return raw_combined[:crypto_sign_BYTES]
 
 
-def verify_sign_detached(message: bytes, signature: bytes, public_key: bytes) -> None:
+def verify_sign_detached(message, signature, public_key):
     """
     Verify the signature of the message given the signature and the public key
     """
