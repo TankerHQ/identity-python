@@ -1,14 +1,19 @@
 language: python
-python:
-  - "3.5"
-  - "3.6"
+matrix:
+  include:
+    - python: "2.7"
+    - python: "3.4"
+    - python: "3.5"
+    - python: "3.6"
+    - python: "3.7"
+      dist: xenial
+      sudo: true
 
 install:
-  - pip install pipenv
-  - pipenv install --dev
-  - pipenv run python setup.py develop
+  - curl -L https://github.com/TankerHQ/dmenv/releases/download/v0.7.0/dmenv-linux -o dmenv
+  - chmod u+x dmenv
+  - ./dmenv install
 
 
 script:
-  - pipenv check
-  - pipenv run pytest
+  - ./dmenv run pytest
