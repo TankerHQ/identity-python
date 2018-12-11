@@ -10,11 +10,10 @@ matrix:
       sudo: true
 
 install:
-  - pip install pipenv
-  - pipenv install --dev
-  - pipenv run python setup.py develop
+  - curl -L https://github.com/TankerHQ/dmenv/releases/download/v0.7.0/dmenv-linux -o dmenv
+  - chmod u+x dmenv
+  - ./dmenv install
 
 
 script:
-  - pipenv check
-  - pipenv run pytest
+  - ./dmenv run pytest

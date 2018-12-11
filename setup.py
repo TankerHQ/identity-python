@@ -9,6 +9,9 @@ setup(name="tankersdk-user-token",
       author="Kontrol SAS",
       packages=find_packages(),
       install_requires=["PyNaCl"],
+      extras_require={
+            "dev": ["pytest"],
+      },
       classifiers=[
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.4",
