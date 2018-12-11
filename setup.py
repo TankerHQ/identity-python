@@ -1,10 +1,14 @@
 import sys
 from setuptools import setup, find_packages
 
+def get_long_description():
+    with open("README.rst") as file:
+        return file.read()
+
 setup(name="tankersdk-user-token",
       version="0.3",
       description="Tanker user token library",
-      long_description="Building blocks to create your own user token server to use with the Tanker SDK",
+      long_description=get_long_description(),
       url="https://github.com/TankerHQ/user-token-python",
       author="Kontrol SAS",
       packages=find_packages(),
