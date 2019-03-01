@@ -7,7 +7,7 @@ Installation
 .. code-block:: console
 
     $ pip install flask
-    $ pip install tankersdk-user-token
+    $ pip install tankersdk-identity
 
 
 Usage
@@ -21,4 +21,4 @@ Usage
 
 .. note::
 
-    User tokens are generated only once and never stored. In a real application you should implement a persistent storage.
+    Identities are generated only once and never stored. In a real application you should implement a persistent storage.

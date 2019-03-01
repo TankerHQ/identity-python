@@ -20,8 +20,8 @@ def load_config():
 load_config()
 
 
-@app.route("/user_token")
-def user_token():
+@app.route("/identity")
+def identity():
     request_args = flask.request.args
     user_id = request_args.get("user_id")
     if not user_id:
@@ -37,18 +37,18 @@ def user_token():
 
     print("New request:", user_id)
 
-    # TODO: retrieve the token of the current user if it exists
-    token = None
+    # TODO: retrieve the identity of the current user if it exists
+    identity = None
 
-    if not token:
-        print("Creating new user token")
+    if not identity:
+        print("Creating new identity")
         tanker_config = app.config["TANKER"]
         trustchain_id = tanker_config["trustchainId"]
         trustchain_private_key = tanker_config["trustchainPrivateKey"]
-        token = tanker_identity.identity.generate_user_token(
+        identity = tanker_identity.identity.create_identity(
             trustchain_id,
             trustchain_private_key,
             user_id
         )
 
-    return token
+    return identity

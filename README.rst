@@ -1,10 +1,10 @@
-User Token
-==========
+Identity SDK
+============
 
-User token generation in Python for the `Tanker SDK <https://tanker.io/docs/latest>`_.
+Tanker identity generation in Python for the `Tanker SDK <https://tanker.io/docs/latest>`_.
 
-.. image:: https://travis-ci.org/TankerHQ/user-token-python.svg?branch=master
-    :target: https://travis-ci.org/TankerHQ/user-token-python
+.. image:: https://travis-ci.org/TankerHQ/identity-python.svg?branch=master
+    :target: https://travis-ci.org/TankerHQ/identity-python
 
 .. image:: https://img.shields.io/pypi/v/tankersdk-user-token.svg
     :target: https://pypi.org/project/tankersdk-user-token
@@ -18,7 +18,7 @@ With `pip`:
 
 .. code-block:: console
 
-    $ pip install tankersdk-user-token
+    $ pip install tankersdk-identity
 
 
 Usage
@@ -28,15 +28,15 @@ Usage
 
 .. code-block:: python
 
-      import tankersdk.usertoken
+      import tanker_identity.identity
 
-      def retrieve_user_token(user_id):
-          """ Fetch a previously stored token """
+      def retrieve_identity(user_id):
+          """ Fetch a previously stored identity """
           ...
 
 
-       def store_user_token(user_id, token):
-          """ Store a previously generated token """
+       def store_identity(user_id, identity):
+          """ Store a previously generated identity """
           ...
 
 
@@ -45,29 +45,29 @@ Usage
           ...
 
 
-      def serve_user_token(user_id):
+      def serve_user_identity(user_id):
           """ Called during sign/up sign in of your users.
 
-          Send a user token, generated if necessary, but only to
-          authenticated users
+          Send a user identity, generated if necessary,
+          but only to authenticated users
           """
           authorized = check_auth(user_id)
           if not authorized:
               raise UnAuthorizedError()
 
-          token = retrieve_user_token(user_id)
+          token = retrieve_user_identity(user_id)
 
-          if not token:
-            token = tankersdk.usertoken.generate_user_token(trustchain_id, trustchain_private_key, user_id)
-            store_user_token(user_id, token)
+          if not identity:
+            identity = tanker_identity.identity.create_identity(trustchain_id, trustchain_private_key, user_id)
+            store_user_identity(user_id, identity)
 
-          return token
+          return identity
 
 
 Going further
 -------------
 
 
-Read more about user tokens in the `Tanker guide <https://tanker.io/docs/latest/guide/server/>`_.
+Read more about identities in the `Tanker guide <https://tanker.io/docs/latest/guide/server/>`_.
 
-Check the `examples <https://github.com/TankerHQ/user-token-python/tree/master/examples>`_ folder for usage examples.
+Check the `examples <https://github.com/TankerHQ/identity-python/tree/master/examples>`_ folder for usage examples.
