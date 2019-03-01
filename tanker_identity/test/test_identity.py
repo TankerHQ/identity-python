@@ -22,7 +22,7 @@ def test_generate_identity_happy(test_trustchain):
     identity = generate_test_identity(test_trustchain)
     delegation_signature = base64.b64decode(identity["delegation_signature"])
 
-    assert identity["trustchain_id"] == test_trustchain["id"].decode()
+    assert identity["trustchain_id"] == test_trustchain["id"]
     check_user_secret(identity)
     check_signature(test_trustchain["public_key"], identity, delegation_signature)
 
@@ -58,7 +58,7 @@ def test_public_identity_matches_provisional_identity(test_trustchain):
     identity = parse_b64_json(encoded_identity)
     public_identity = parse_b64_json(tanker_identity.identity.get_public_identity(encoded_identity))
 
-    assert public_identity["trustchain_id"] == test_trustchain["id"].decode()
+    assert public_identity["trustchain_id"] == test_trustchain["id"]
     assert public_identity["public_signature_key"] == identity["signature_key_pair"]["public_key"]
     assert public_identity["public_encryption_key"] == identity["encryption_key_pair"]["public_key"]
 
@@ -73,7 +73,6 @@ def test_public_identity_matches_full_identity(test_trustchain):
     identity = parse_b64_json(encoded_identity)
     public_identity = parse_b64_json(tanker_identity.identity.get_public_identity(encoded_identity))
 
-    assert public_identity["trustchain_id"] == test_trustchain["id"].decode()
+    assert public_identity["trustchain_id"] == test_trustchain["id"]
     assert public_identity["target"] == "user"
     assert public_identity["value"] == identity["user_id"]
-

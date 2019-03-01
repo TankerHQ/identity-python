@@ -63,7 +63,7 @@ def create_identity(trustchain_id, trustchain_private_key, user_id):
     user_secret = random_buf + bytearray([hashed[0]])
 
     identity = {
-        "trustchain_id": trustchain_id.decode(),
+        "trustchain_id": trustchain_id,
         "user_id": base64.b64encode(hashed_user_id).decode(),
         "user_secret": base64.b64encode(user_secret).decode(),
         "ephemeral_public_signature_key": base64.b64encode(e_public_key).decode(),
@@ -79,7 +79,7 @@ def create_provisional_identity(trustchain_id, email):
     encryption_keys, signature_keys = _generate_preshare_keys()
 
     identity = {
-        "trustchain_id": trustchain_id.decode(),
+        "trustchain_id": trustchain_id,
         "target": "email",
         "value": email,
         "signature_key_pair": signature_keys,

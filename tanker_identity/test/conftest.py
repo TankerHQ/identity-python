@@ -8,7 +8,7 @@ def test_trustchain():
 
     """
     return {
-        "id": b"AzES0aJwDCej9bQVY9AUMZBCLdX0msEc/TJ4DOhZaQs=",
-        "public_key":  b"dOeLBpHz2IF37UQkS36sXomqEcEAjSyCsXZ7irn9UQA=",
-        "private_key": b"cBAq6A00rRNVTHicxNHdDFuq6LNUo6gAz58oKqy9CGd054sGkfPYgXftRCRLfqxeiaoRwQCNLIKxdnuKuf1RAA=="
+        "id": "AzES0aJwDCej9bQVY9AUMZBCLdX0msEc/TJ4DOhZaQs=",
+        "public_key":  "dOeLBpHz2IF37UQkS36sXomqEcEAjSyCsXZ7irn9UQA=",
+        "private_key": "cBAq6A00rRNVTHicxNHdDFuq6LNUo6gAz58oKqy9CGd054sGkfPYgXftRCRLfqxeiaoRwQCNLIKxdnuKuf1RAA=="
     }
