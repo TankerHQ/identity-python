@@ -2,7 +2,7 @@ import flask
 import json
 import os
 
-import tankersdk.usertoken
+import tanker_identity.identity
 
 app = flask.Flask(__name__)
 app.debug = True
@@ -45,7 +45,7 @@ def user_token():
         tanker_config = app.config["TANKER"]
         trustchain_id = tanker_config["trustchainId"]
         trustchain_private_key = tanker_config["trustchainPrivateKey"]
-        token = tankersdk.usertoken.generate_user_token(
+        token = tanker_identity.identity.generate_user_token(
             trustchain_id,
             trustchain_private_key,
             user_id
