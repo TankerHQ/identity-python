@@ -28,7 +28,7 @@ Usage
 
 .. code-block:: python
 
-      import tanker_identity.identity
+      import tanker_identity
 
       def retrieve_identity(user_id):
           """ Fetch a previously stored identity """

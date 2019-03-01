@@ -2,7 +2,7 @@ import flask
 import json
 import os
 
-import tanker_identity.identity
+import tanker_identity
 
 app = flask.Flask(__name__)
 app.debug = True

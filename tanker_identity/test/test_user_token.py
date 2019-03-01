@@ -1,7 +1,7 @@
 import base64
 
 import tanker_identity.crypto
-import tanker_identity.identity
+import tanker_identity
 
 import pytest
 from tanker_identity.test.helpers import corrupt_buffer, check_user_secret, check_signature, parse_b64_json
@@ -9,7 +9,7 @@ from tanker_identity.test.helpers import corrupt_buffer, check_user_secret, chec
 
 def generate_test_token(test_trustchain):
     user_id = "guido@tanker.io"
-    b64_token = tanker_identity.identity.generate_user_token(
+    b64_token = tanker_identity.generate_user_token(
         test_trustchain["id"],
         test_trustchain["private_key"],
         user_id
