@@ -28,7 +28,7 @@ Usage
 
 .. code-block:: python
 
-      import tanker_identity
+      import tankersdk_identity
 
       def retrieve_identity(user_id):
           """ Fetch a previously stored identity """
@@ -58,7 +58,7 @@ Usage
           token = retrieve_user_identity(user_id)
 
           if not identity:
-            identity = tanker_identity.identity.create_identity(trustchain_id, trustchain_private_key, user_id)
+            identity = tankersdk_identity.identity.create_identity(trustchain_id, trustchain_private_key, user_id)
             store_user_identity(user_id, identity)
 
           return identity

@@ -2,7 +2,7 @@ import flask
 import json
 import os
 
-import tanker_identity
+import tankersdk_identity
 
 app = flask.Flask(__name__)
 app.debug = True
@@ -45,7 +45,7 @@ def identity():
         tanker_config = app.config["TANKER"]
         trustchain_id = tanker_config["trustchainId"]
         trustchain_private_key = tanker_config["trustchainPrivateKey"]
-        identity = tanker_identity.identity.create_identity(
+        identity = tankersdk_identity.create_identity(
             trustchain_id,
             trustchain_private_key,
             user_id

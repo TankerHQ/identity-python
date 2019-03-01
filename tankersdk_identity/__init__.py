@@ -2,23 +2,23 @@ import base64
 import json
 import os
 
-from tanker_identity.crypto import BLOCK_HASH_SIZE, CHECK_HASH_BLOCK_SIZE, USER_SECRET_SIZE
-import tanker_identity.crypto
+from tankersdk_identity.crypto import BLOCK_HASH_SIZE, CHECK_HASH_BLOCK_SIZE, USER_SECRET_SIZE
+import tankersdk_identity.crypto
 
 
 def _hash_user_id(trustchain_id, user_id):
     user_id_buff = user_id.encode()
     to_hash = user_id_buff + trustchain_id
-    return tanker_identity.crypto.generichash(to_hash, size=BLOCK_HASH_SIZE)
+    return tankersdk_identity.crypto.generichash(to_hash, size=BLOCK_HASH_SIZE)
 
 
 def _generate_preshare_keys():
-    enc_pub_key, enc_priv_key = tanker_identity.crypto.box_keypair()
+    enc_pub_key, enc_priv_key = tankersdk_identity.crypto.box_keypair()
     encryption_keys = {
         "public_key": base64.b64encode(enc_pub_key).decode(),
         "private_key": base64.b64encode(enc_priv_key).decode(),
     }
-    sig_pub_key, sig_priv_key = tanker_identity.crypto.sign_keypair()
+    sig_pub_key, sig_priv_key = tankersdk_identity.crypto.sign_keypair()
     signature_keys = {
         "public_key": base64.b64encode(sig_pub_key).decode(),
         "private_key": base64.b64encode(sig_priv_key).decode(),
@@ -31,11 +31,11 @@ def generate_user_token(trustchain_id, trustchain_private_key, user_id):
     private_key_buf = base64.b64decode(trustchain_private_key)
     hashed_user_id = _hash_user_id(trustchain_id_buf, user_id)
 
-    e_public_key, e_secret_key = tanker_identity.crypto.sign_keypair()
+    e_public_key, e_secret_key = tankersdk_identity.crypto.sign_keypair()
     to_sign = e_public_key + hashed_user_id
-    delegation_signature = tanker_identity.crypto.sign_detached(to_sign, private_key_buf)
+    delegation_signature = tankersdk_identity.crypto.sign_detached(to_sign, private_key_buf)
     random_buf = os.urandom(USER_SECRET_SIZE - 1)
-    hashed = tanker_identity.crypto.generichash(random_buf + hashed_user_id, size=CHECK_HASH_BLOCK_SIZE)
+    hashed = tankersdk_identity.crypto.generichash(random_buf + hashed_user_id, size=CHECK_HASH_BLOCK_SIZE)
     user_secret = random_buf + bytearray([hashed[0]])
 
     user_token = {
@@ -55,11 +55,11 @@ def create_identity(trustchain_id, trustchain_private_key, user_id):
     private_key_buf = base64.b64decode(trustchain_private_key)
     hashed_user_id = _hash_user_id(trustchain_id_buf, user_id)
 
-    e_public_key, e_secret_key = tanker_identity.crypto.sign_keypair()
+    e_public_key, e_secret_key = tankersdk_identity.crypto.sign_keypair()
     to_sign = e_public_key + hashed_user_id
-    delegation_signature = tanker_identity.crypto.sign_detached(to_sign, private_key_buf)
+    delegation_signature = tankersdk_identity.crypto.sign_detached(to_sign, private_key_buf)
     random_buf = os.urandom(USER_SECRET_SIZE - 1)
-    hashed = tanker_identity.crypto.generichash(random_buf + hashed_user_id, size=CHECK_HASH_BLOCK_SIZE)
+    hashed = tankersdk_identity.crypto.generichash(random_buf + hashed_user_id, size=CHECK_HASH_BLOCK_SIZE)
     user_secret = random_buf + bytearray([hashed[0]])
 
     identity = {
