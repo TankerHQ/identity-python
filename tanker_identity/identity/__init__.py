@@ -91,7 +91,7 @@ def create_provisional_identity(trustchain_id, email):
 
 
 def get_public_identity(identity):
-    identity_json = base64.b64decode(identity)
+    identity_json = base64.b64decode(identity).decode()
     identity_obj = json.loads(identity_json)
 
     if "user_id" in identity_obj:
