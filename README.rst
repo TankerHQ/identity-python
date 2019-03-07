@@ -6,8 +6,8 @@ Tanker identity generation in Python for the `Tanker SDK <https://tanker.io/docs
 .. image:: https://travis-ci.org/TankerHQ/identity-python.svg?branch=master
     :target: https://travis-ci.org/TankerHQ/identity-python
 
-.. image:: https://img.shields.io/pypi/v/tankersdk-user-token.svg
-    :target: https://pypi.org/project/tankersdk-user-token
+.. image:: https://img.shields.io/pypi/v/tankersdk_identity.svg
+    :target: https://pypi.org/project/tankersdk_identity
 
 
 Installation
