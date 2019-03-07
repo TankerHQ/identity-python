@@ -58,7 +58,7 @@ Usage
           token = retrieve_user_identity(user_id)
 
           if not identity:
-            identity = tankersdk_identity.identity.create_identity(trustchain_id, trustchain_private_key, user_id)
+            identity = tankersdk_identity.create_identity(trustchain_id, trustchain_private_key, user_id)
             store_user_identity(user_id, identity)
 
           return identity
