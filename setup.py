@@ -16,7 +16,7 @@ setup(
     packages=find_packages(),
     install_requires=["PyNaCl"],
     extras_require={
-        "dev": ["pytest"],
+        "dev": ["pytest", "twine"],
     },
     classifiers=[
         "Programming Language :: Python :: 2.7",
