@@ -8,7 +8,7 @@ def get_long_description():
 
 setup(
     name="tankersdk-identity",
-    version="0.3",
+    version="0.1.0",
     description="Tanker identity library",
     long_description=get_long_description(),
     url="https://github.com/TankerHQ/identity-python",
