@@ -1,5 +1,6 @@
 from nacl.exceptions import BadSignatureError
 from nacl.bindings.crypto_sign import crypto_sign, crypto_sign_keypair, crypto_sign_open, crypto_sign_BYTES
+from nacl.bindings.crypto_box import crypto_box_keypair
 from nacl.bindings.crypto_generichash import generichash_blake2b_salt_personal
 
 
@@ -25,6 +26,13 @@ def sign_keypair():
     Generate a pair of signing keys and return a tuple (public_key, private_key)
     """
     return crypto_sign_keypair()
+
+
+def box_keypair():
+    """
+    Generate a pair of encryption keys and return a tuple (public_key, private_key)
+    """
+    return crypto_box_keypair()
 
 
 def sign_detached(message, private_key):
