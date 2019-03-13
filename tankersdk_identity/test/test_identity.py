@@ -76,3 +76,38 @@ def test_public_identity_matches_full_identity(test_trustchain):
     assert public_identity["trustchain_id"] == test_trustchain["id"]
     assert public_identity["target"] == "user"
     assert public_identity["value"] == identity["user_id"]
+
+
+def test_upgrade_token_ok(test_trustchain):
+    user_id = "up@gra.de"
+    token = tankersdk_identity.generate_user_token(
+        test_trustchain["id"],
+        test_trustchain["private_key"],
+        user_id,
+    )
+    b64_identity = tankersdk_identity.upgrade_user_token(
+        test_trustchain["id"],
+        user_id,
+        token,
+    )
+    identity = parse_b64_json(b64_identity)
+    delegation_signature = base64.b64decode(identity["delegation_signature"])
+
+    assert identity["trustchain_id"] == test_trustchain["id"]
+    check_user_secret(identity)
+    check_signature(test_trustchain["public_key"], identity, delegation_signature)
+
+
+def test_upgarde_bad_user_id(test_trustchain):
+    user_id = "up@gra.de"
+    token = tankersdk_identity.generate_user_token(
+        test_trustchain["id"],
+        test_trustchain["private_key"],
+        user_id,
+    )
+    with pytest.raises(ValueError):
+        tankersdk_identity.upgrade_user_token(
+            test_trustchain["id"],
+            "ot@her.id",
+            token,
+        )
