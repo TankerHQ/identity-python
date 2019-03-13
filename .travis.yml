@@ -8,6 +8,9 @@ matrix:
     - python: "3.7"
       dist: xenial
       sudo: true
+      script:
+        - ./dmenv run -- pytest --cov=tankersdk_identity
+        - codecov
 
 install:
   - curl -L https://github.com/TankerHQ/dmenv/releases/download/v0.7.0/dmenv-linux -o dmenv
