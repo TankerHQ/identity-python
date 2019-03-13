@@ -23,8 +23,8 @@ def test_generate_identity_happy(test_trustchain):
     delegation_signature = base64.b64decode(identity["delegation_signature"])
 
     assert identity["trustchain_id"] == test_trustchain["id"]
-    check_user_secret(identity)
-    check_signature(test_trustchain["public_key"], identity, delegation_signature)
+    check_user_secret(identity, "value")
+    check_signature(test_trustchain["public_key"], identity, delegation_signature, "value")
 
 
 def test_generate_identity_invalid_signature(test_trustchain):
@@ -33,7 +33,7 @@ def test_generate_identity_invalid_signature(test_trustchain):
     invalid_signature = corrupt_buffer(delegation_signature)
 
     with pytest.raises(tankersdk_identity.crypto.InvalidSignature):
-        check_signature(test_trustchain["public_key"], identity, invalid_signature)
+        check_signature(test_trustchain["public_key"], identity, invalid_signature, "value")
 
 
 def test_provisional_identities_are_different(test_trustchain):
@@ -46,8 +46,8 @@ def test_provisional_identities_are_different(test_trustchain):
         "bob@office360.com"
     ))
 
-    for key_pair in ["encryption_key_pair", "signature_key_pair"]:
-        assert identity_alice[key_pair]["public_key"] != identity_bob[key_pair]["public_key"]
+    for key in ["public_encryption_key", "public_signature_key"]:
+        assert identity_alice[key] != identity_bob[key]
 
 
 def test_public_identity_matches_provisional_identity(test_trustchain):
@@ -59,8 +59,8 @@ def test_public_identity_matches_provisional_identity(test_trustchain):
     public_identity = parse_b64_json(tankersdk_identity.get_public_identity(encoded_identity))
 
     assert public_identity["trustchain_id"] == test_trustchain["id"]
-    assert public_identity["public_signature_key"] == identity["signature_key_pair"]["public_key"]
-    assert public_identity["public_encryption_key"] == identity["encryption_key_pair"]["public_key"]
+    assert public_identity["public_signature_key"] == identity["public_signature_key"]
+    assert public_identity["public_encryption_key"] == identity["public_encryption_key"]
 
 
 def test_public_identity_matches_full_identity(test_trustchain):
@@ -75,7 +75,7 @@ def test_public_identity_matches_full_identity(test_trustchain):
 
     assert public_identity["trustchain_id"] == test_trustchain["id"]
     assert public_identity["target"] == "user"
-    assert public_identity["value"] == identity["user_id"]
+    assert public_identity["value"] == identity["value"]
 
 
 def test_upgrade_token_ok(test_trustchain):
@@ -94,8 +94,8 @@ def test_upgrade_token_ok(test_trustchain):
     delegation_signature = base64.b64decode(identity["delegation_signature"])
 
     assert identity["trustchain_id"] == test_trustchain["id"]
-    check_user_secret(identity)
-    check_signature(test_trustchain["public_key"], identity, delegation_signature)
+    check_user_secret(identity, "value")
+    check_signature(test_trustchain["public_key"], identity, delegation_signature, "value")
 
 
 def test_upgarde_bad_user_id(test_trustchain):
