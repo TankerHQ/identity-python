@@ -64,7 +64,8 @@ def create_identity(trustchain_id, trustchain_private_key, user_id):
 
     identity = {
         "trustchain_id": trustchain_id,
-        "user_id": base64.b64encode(hashed_user_id).decode(),
+        "target": "user",
+        "value": base64.b64encode(hashed_user_id).decode(),
         "user_secret": base64.b64encode(user_secret).decode(),
         "ephemeral_public_signature_key": base64.b64encode(e_public_key).decode(),
         "ephemeral_private_signature_key": base64.b64encode(e_secret_key).decode(),
@@ -82,8 +83,10 @@ def create_provisional_identity(trustchain_id, email):
         "trustchain_id": trustchain_id,
         "target": "email",
         "value": email,
-        "signature_key_pair": signature_keys,
-        "encryption_key_pair": encryption_keys,
+        "public_encryption_key": encryption_keys["public_key"],
+        "private_encryption_key": encryption_keys["private_key"],
+        "public_signature_key": signature_keys["public_key"],
+        "private_signature_key": signature_keys["private_key"],
     }
 
     as_json = json.dumps(identity)
@@ -94,20 +97,20 @@ def get_public_identity(identity):
     identity_json = base64.b64decode(identity).decode()
     identity_obj = json.loads(identity_json)
 
-    if "user_id" in identity_obj:
+    if identity_obj["target"] == "user":
         public_identity = {
             "trustchain_id": identity_obj["trustchain_id"],
-            "target": "user",
-            "value": identity_obj["user_id"],
+            "target": identity_obj["target"],
+            "value": identity_obj["value"],
         }
-    elif "encryption_key_pair" in identity_obj and "signature_key_pair" in identity_obj:
+    elif "public_encryption_key" in identity_obj and "public_signature_key" in identity_obj:
         # We have a provisional identity
         public_identity = {
             "trustchain_id": identity_obj["trustchain_id"],
             "target": identity_obj["target"],
             "value": identity_obj["value"],
-            "public_signature_key": identity_obj["signature_key_pair"]["public_key"],
-            "public_encryption_key": identity_obj["encryption_key_pair"]["public_key"],
+            "public_signature_key": identity_obj["public_signature_key"],
+            "public_encryption_key": identity_obj["public_encryption_key"],
         }
     else:
         raise ValueError("Not a valid Tanker identity")
@@ -127,7 +130,8 @@ def upgrade_user_token(trustchain_id, user_id, user_token):
 
     identity = {
         "trustchain_id": trustchain_id,
-        "user_id": token_obj["user_id"],
+        "target": "user",
+        "value": token_obj["user_id"],
         "user_secret": token_obj["user_secret"],
         "ephemeral_public_signature_key": token_obj["ephemeral_public_signature_key"],
         "ephemeral_private_signature_key": token_obj["ephemeral_private_signature_key"],
