@@ -9,6 +9,9 @@ Tanker identity generation in Python for the `Tanker SDK <https://tanker.io/docs
 .. image:: https://img.shields.io/pypi/v/tankersdk_identity.svg
     :target: https://pypi.org/project/tankersdk_identity
 
+.. image:: https://img.shields.io/codecov/c/github/TankerHQ/identity-python.svg?label=Coverage
+    :target: https://codecov.io/gh/TankerHQ/identity-python
+
 
 Installation
 ------------
