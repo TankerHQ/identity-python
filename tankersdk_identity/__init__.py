@@ -119,10 +119,10 @@ def get_public_identity(identity):
 def upgrade_user_token(trustchain_id, user_id, user_token):
     trustchain_id_buf = base64.b64decode(trustchain_id)
     hashed_user_id = _hash_user_id(trustchain_id_buf, user_id)
-    token_json = base64.b64decode(user_token)
+    token_json = base64.b64decode(user_token).decode()
     token_obj = json.loads(token_json)
 
-    if base64.b64encode(hashed_user_id) != token_obj['user_id']:
+    if base64.b64encode(hashed_user_id).decode() != token_obj['user_id']:
         raise ValueError("Invalid user ID provided")
 
     identity = {
