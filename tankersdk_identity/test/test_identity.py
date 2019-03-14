@@ -1,4 +1,5 @@
 import base64
+import json
 
 import tankersdk_identity.crypto
 import tankersdk_identity
@@ -113,3 +114,9 @@ def test_upgarde_bad_user_id(test_trustchain):
             "ot@her.id",
             token,
         )
+
+
+def test_get_public_from_bad_identity():
+    fake_id = base64.b64encode(json.dumps({"target": "stuffs"}).encode()).decode()
+    with pytest.raises(ValueError):
+        tankersdk_identity.get_public_identity(fake_id)
