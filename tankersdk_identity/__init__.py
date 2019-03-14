@@ -26,6 +26,11 @@ def _generate_preshare_keys():
     return encryption_keys, signature_keys
 
 
+def _deserialize_identity(identity):
+    identity_json = base64.b64decode(identity).decode()
+    return json.loads(identity_json)
+
+
 def generate_user_token(trustchain_id, trustchain_private_key, user_id):
     trustchain_id_buf = base64.b64decode(trustchain_id)
     private_key_buf = base64.b64decode(trustchain_private_key)
@@ -94,8 +99,7 @@ def create_provisional_identity(trustchain_id, email):
 
 
 def get_public_identity(identity):
-    identity_json = base64.b64decode(identity).decode()
-    identity_obj = json.loads(identity_json)
+    identity_obj = _deserialize_identity(identity)
 
     if identity_obj["target"] == "user":
         public_identity = {
