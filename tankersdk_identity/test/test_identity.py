@@ -2,9 +2,10 @@ import base64
 
 import tankersdk_identity.crypto
 import tankersdk_identity
+from tankersdk_identity import _deserialize_identity
 
 import pytest
-from tankersdk_identity.test.helpers import corrupt_buffer, check_user_secret, check_signature, parse_b64_json
+from tankersdk_identity.test.helpers import corrupt_buffer, check_user_secret, check_signature
 
 
 def generate_test_identity(test_trustchain):
@@ -14,7 +15,7 @@ def generate_test_identity(test_trustchain):
         test_trustchain["private_key"],
         user_id
     )
-    identity = parse_b64_json(b64_identity)
+    identity = _deserialize_identity(b64_identity)
     return identity
 
 
@@ -37,11 +38,11 @@ def test_generate_identity_invalid_signature(test_trustchain):
 
 
 def test_provisional_identities_are_different(test_trustchain):
-    identity_alice = parse_b64_json(tankersdk_identity.create_provisional_identity(
+    identity_alice = _deserialize_identity(tankersdk_identity.create_provisional_identity(
         test_trustchain["id"],
         "alice@gmail.ru"
     ))
-    identity_bob = parse_b64_json(tankersdk_identity.create_provisional_identity(
+    identity_bob = _deserialize_identity(tankersdk_identity.create_provisional_identity(
         test_trustchain["id"],
         "bob@office360.com"
     ))
@@ -55,10 +56,11 @@ def test_public_identity_matches_provisional_identity(test_trustchain):
         test_trustchain["id"],
         "snowy@nasa.gov"
     )
-    identity = parse_b64_json(encoded_identity)
-    public_identity = parse_b64_json(tankersdk_identity.get_public_identity(encoded_identity))
+    identity = _deserialize_identity(encoded_identity)
+    public_identity = _deserialize_identity(tankersdk_identity.get_public_identity(encoded_identity))
 
     assert public_identity["trustchain_id"] == test_trustchain["id"]
+    assert public_identity["target"] == "email"
     assert public_identity["public_signature_key"] == identity["public_signature_key"]
     assert public_identity["public_encryption_key"] == identity["public_encryption_key"]
 
@@ -70,8 +72,8 @@ def test_public_identity_matches_full_identity(test_trustchain):
         test_trustchain["private_key"],
         user_id
     )
-    identity = parse_b64_json(encoded_identity)
-    public_identity = parse_b64_json(tankersdk_identity.get_public_identity(encoded_identity))
+    identity = _deserialize_identity(encoded_identity)
+    public_identity = _deserialize_identity(tankersdk_identity.get_public_identity(encoded_identity))
 
     assert public_identity["trustchain_id"] == test_trustchain["id"]
     assert public_identity["target"] == "user"
@@ -90,7 +92,7 @@ def test_upgrade_token_ok(test_trustchain):
         user_id,
         token,
     )
-    identity = parse_b64_json(b64_identity)
+    identity = _deserialize_identity(b64_identity)
     delegation_signature = base64.b64decode(identity["delegation_signature"])
 
     assert identity["trustchain_id"] == test_trustchain["id"]
