@@ -24,48 +24,59 @@ With `pip`:
     $ pip install tankersdk-identity
 
 
-Usage
------
-
+API
+---
 
 
 .. code-block:: python
 
-      import tankersdk_identity
+    tankersdk_identity.create_identity(trustchain_id, trustchain_private_key, user_id)
 
-      def retrieve_identity(user_id):
-          """ Fetch a previously stored identity """
-          ...
+Create a new Tanker identity. This identity is secret and must only be given to a user who has been authenticated by your application. This identity is used by the Tanker client SDK to open a Tanker session
 
+**trustchain_id**
+   The trustchain ID. You can access it from the `Tanker dashboard <https://dashboard.tanker.io>`_.
 
-       def store_identity(user_id, identity):
-          """ Store a previously generated identity """
-          ...
+**trustchain_private_key**
+   The trustchain private key. A secret that you have saved right after the creation of you trustchain.
+**user_id**
+   The ID of a user in your application.
 
+.. code-block:: python
 
-       def check_auth(user_id):
-          """ Check the user is authenticated """
-          ...
+    tankersdk_identity.create_provisional_identity(trustchain_id, email)
 
+Create a Tanker provisional identity. It allows you to share a resource with a user who does not have an account in your application yet.
 
-      def serve_user_identity(user_id):
-          """ Called during sign/up sign in of your users.
+**trustchain_id**
+   The trustchain ID. You can access it from the `Tanker dashboard <https://dashboard.tanker.io>`_.
 
-          Send a user identity, generated if necessary,
-          but only to authenticated users
-          """
-          authorized = check_auth(user_id)
-          if not authorized:
-              raise UnAuthorizedError()
+**email**
+   The email of the potential recipient of the resource.
 
-          token = retrieve_user_identity(user_id)
+.. code-block:: python
 
-          if not identity:
-            identity = tankersdk_identity.create_identity(trustchain_id, trustchain_private_key, user_id)
-            store_user_identity(user_id, identity)
+    tankersdk_identity.get_public_identity(identity)
 
-          return identity
+Return the public identity from an identity. This public identity can be used by the Tanker client SDK to share encrypted resource.
 
+**identity**
+   A secret identity.
+
+.. code-block:: python
+
+    tankersdk_identity.upgrade_user_token(trustchain_id, user_id, user_token)
+
+Return a Tanker identity from Tanker v1 user Token. Tanker v1 used a user token, when migrating to Tanker v2 you should use this function to migrate you used tokens to identities. This identity is secret and must only be given to a user who has been authenticated by your application. This identity is used by the Tanker client SDK to open a Tanker session
+
+**trustchain_id**
+   The trustchain ID. You can access it from the `Tanker dashboard <https://dashboard.tanker.io>`_.
+
+**user_id**
+   The ID of a user in your application.
+
+**user_token**
+   The Tanker v1 user token.
 
 Going further
 -------------
