@@ -6,9 +6,9 @@ from tankersdk_identity.crypto import BLOCK_HASH_SIZE, CHECK_HASH_BLOCK_SIZE, US
 import tankersdk_identity.crypto
 
 
-def _hash_user_id(trustchain_id, user_id):
+def _hash_user_id(app_id, user_id):
     user_id_buff = user_id.encode()
-    to_hash = user_id_buff + trustchain_id
+    to_hash = user_id_buff + app_id
     return tankersdk_identity.crypto.generichash(to_hash, size=BLOCK_HASH_SIZE)
 
 
@@ -31,14 +31,14 @@ def _deserialize_identity(identity):
     return json.loads(identity_json)
 
 
-def generate_user_token(trustchain_id, trustchain_private_key, user_id):
-    trustchain_id_buf = base64.b64decode(trustchain_id)
-    private_key_buf = base64.b64decode(trustchain_private_key)
-    hashed_user_id = _hash_user_id(trustchain_id_buf, user_id)
+def generate_user_token(app_id, app_secret, user_id):
+    app_id_buf = base64.b64decode(app_id)
+    secret_buf = base64.b64decode(app_secret)
+    hashed_user_id = _hash_user_id(app_id_buf, user_id)
 
     e_public_key, e_secret_key = tankersdk_identity.crypto.sign_keypair()
     to_sign = e_public_key + hashed_user_id
-    delegation_signature = tankersdk_identity.crypto.sign_detached(to_sign, private_key_buf)
+    delegation_signature = tankersdk_identity.crypto.sign_detached(to_sign, secret_buf)
     random_buf = os.urandom(USER_SECRET_SIZE - 1)
     hashed = tankersdk_identity.crypto.generichash(random_buf + hashed_user_id, size=CHECK_HASH_BLOCK_SIZE)
     user_secret = random_buf + bytearray([hashed[0]])
@@ -55,20 +55,20 @@ def generate_user_token(trustchain_id, trustchain_private_key, user_id):
     return base64.b64encode(as_json.encode()).decode()
 
 
-def create_identity(trustchain_id, trustchain_private_key, user_id):
-    trustchain_id_buf = base64.b64decode(trustchain_id)
-    private_key_buf = base64.b64decode(trustchain_private_key)
-    hashed_user_id = _hash_user_id(trustchain_id_buf, user_id)
+def create_identity(app_id, app_secret, user_id):
+    app_id_buf = base64.b64decode(app_id)
+    secret_buf = base64.b64decode(app_secret)
+    hashed_user_id = _hash_user_id(app_id_buf, user_id)
 
     e_public_key, e_secret_key = tankersdk_identity.crypto.sign_keypair()
     to_sign = e_public_key + hashed_user_id
-    delegation_signature = tankersdk_identity.crypto.sign_detached(to_sign, private_key_buf)
+    delegation_signature = tankersdk_identity.crypto.sign_detached(to_sign, secret_buf)
     random_buf = os.urandom(USER_SECRET_SIZE - 1)
     hashed = tankersdk_identity.crypto.generichash(random_buf + hashed_user_id, size=CHECK_HASH_BLOCK_SIZE)
     user_secret = random_buf + bytearray([hashed[0]])
 
     identity = {
-        "trustchain_id": trustchain_id,
+        "trustchain_id": app_id,
         "target": "user",
         "value": base64.b64encode(hashed_user_id).decode(),
         "user_secret": base64.b64encode(user_secret).decode(),
@@ -81,11 +81,11 @@ def create_identity(trustchain_id, trustchain_private_key, user_id):
     return base64.b64encode(as_json.encode()).decode()
 
 
-def create_provisional_identity(trustchain_id, email):
+def create_provisional_identity(app_id, email):
     encryption_keys, signature_keys = _generate_preshare_keys()
 
     identity = {
-        "trustchain_id": trustchain_id,
+        "trustchain_id": app_id,
         "target": "email",
         "value": email,
         "public_encryption_key": encryption_keys["public_key"],
@@ -123,9 +123,9 @@ def get_public_identity(identity):
     return base64.b64encode(as_json.encode()).decode()
 
 
-def upgrade_user_token(trustchain_id, user_id, user_token):
-    trustchain_id_buf = base64.b64decode(trustchain_id)
-    hashed_user_id = _hash_user_id(trustchain_id_buf, user_id)
+def upgrade_user_token(app_id, user_id, user_token):
+    app_id_buf = base64.b64decode(app_id)
+    hashed_user_id = _hash_user_id(app_id_buf, user_id)
     token_json = base64.b64decode(user_token).decode()
     token_obj = json.loads(token_json)
 
@@ -133,7 +133,7 @@ def upgrade_user_token(trustchain_id, user_id, user_token):
         raise ValueError("Invalid user ID provided")
 
     identity = {
-        "trustchain_id": trustchain_id,
+        "trustchain_id": app_id,
         "target": "user",
         "value": token_obj["user_id"],
         "user_secret": token_obj["user_secret"],
