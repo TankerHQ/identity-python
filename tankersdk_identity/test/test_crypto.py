@@ -15,11 +15,11 @@ def test_hash():
     assert output == vector
 
 
-def test_valid_signature_hard_coded(test_trustchain):
+def test_valid_signature_hard_coded(test_app):
     message = b'message'
-    public_key = base64.b64decode(test_trustchain["public_key"])
-    private_key = base64.b64decode(test_trustchain["private_key"])
-    signature = tankersdk_identity.crypto.sign_detached(message, private_key)
+    public_key = base64.b64decode(test_app["public_key"])
+    secret = base64.b64decode(test_app["secret"])
+    signature = tankersdk_identity.crypto.sign_detached(message, secret)
     tankersdk_identity.crypto.verify_sign_detached(message, signature, public_key)
 
 

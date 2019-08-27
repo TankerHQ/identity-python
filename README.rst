@@ -30,26 +30,26 @@ API
 
 .. code-block:: python
 
-    tankersdk_identity.create_identity(trustchain_id, trustchain_private_key, user_id)
+    tankersdk_identity.create_identity(app_id, app_secret, user_id)
 
 Create a new Tanker identity. This identity is secret and must only be given to a user who has been authenticated by your application. This identity is used by the Tanker client SDK to open a Tanker session
 
-**trustchain_id**
-   The trustchain ID. You can access it from the `Tanker dashboard <https://dashboard.tanker.io>`_.
+**app_id**
+   The app ID. You can access it from the `Tanker dashboard <https://dashboard.tanker.io>`_.
 
-**trustchain_private_key**
-   The trustchain private key. A secret that you have saved right after the creation of you trustchain.
+**app_secret**
+   The app secret. A secret that you have saved right after the creation of you app.
 **user_id**
    The ID of a user in your application.
 
 .. code-block:: python
 
-    tankersdk_identity.create_provisional_identity(trustchain_id, email)
+    tankersdk_identity.create_provisional_identity(app_id, email)
 
 Create a Tanker provisional identity. It allows you to share a resource with a user who does not have an account in your application yet.
 
-**trustchain_id**
-   The trustchain ID. You can access it from the `Tanker dashboard <https://dashboard.tanker.io>`_.
+**app_id**
+   The app ID. You can access it from the `Tanker dashboard <https://dashboard.tanker.io>`_.
 
 **email**
    The email of the potential recipient of the resource.
@@ -65,12 +65,12 @@ Return the public identity from an identity. This public identity can be used by
 
 .. code-block:: python
 
-    tankersdk_identity.upgrade_user_token(trustchain_id, user_id, user_token)
+    tankersdk_identity.upgrade_user_token(app_id, user_id, user_token)
 
 Return a Tanker identity from Tanker v1 user Token. Tanker v1 used a user token, when migrating to Tanker v2 you should use this function to migrate you used tokens to identities. This identity is secret and must only be given to a user who has been authenticated by your application. This identity is used by the Tanker client SDK to open a Tanker session
 
-**trustchain_id**
-   The trustchain ID. You can access it from the `Tanker dashboard <https://dashboard.tanker.io>`_.
+**app_id**
+   The app ID. You can access it from the `Tanker dashboard <https://dashboard.tanker.io>`_.
 
 **user_id**
    The ID of a user in your application.

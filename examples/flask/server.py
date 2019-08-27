@@ -11,10 +11,10 @@ app.debug = True
 # TODO: ensure config is stored in a secure place
 def load_config():
     current_path = os.getcwd()
-    json_path = os.path.join(current_path, "../config-trustchain.json")
+    json_path = os.path.join(current_path, "../config-app.json")
     with open(json_path) as stream:
-        trustchain_config = json.load(stream)
-    app.config["TANKER"] = trustchain_config
+        app_config = json.load(stream)
+    app.config["TANKER"] = app_config
 
 
 load_config()
@@ -43,11 +43,11 @@ def identity():
     if not identity:
         print("Creating new identity")
         tanker_config = app.config["TANKER"]
-        trustchain_id = tanker_config["trustchainId"]
-        trustchain_private_key = tanker_config["trustchainPrivateKey"]
+        app_id = tanker_config["appId"]
+        app_secret = tanker_config["appSecret"]
         identity = tankersdk_identity.create_identity(
-            trustchain_id,
-            trustchain_private_key,
+            app_id,
+            app_secret,
             user_id
         )
 
