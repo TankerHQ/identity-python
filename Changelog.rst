@@ -1,3 +1,9 @@
+1.2
+===
+
+* Remove the concept of trustchain, use app instead
+* Bump internal dependencies
+
 1.1
 ===
 
