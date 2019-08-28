@@ -38,7 +38,7 @@ Create a new Tanker identity. This identity is secret and must only be given to 
    The app ID. You can access it from the `Tanker dashboard <https://dashboard.tanker.io>`_.
 
 **app_secret**
-   The app secret. A secret that you have saved right after the creation of you app.
+   The app secret. A secret that you have saved right after the creation of your app.
 **user_id**
    The ID of a user in your application.
 
