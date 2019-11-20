@@ -14,7 +14,7 @@ matrix:
     - python: "3.8"
 
 install:
-  - curl -L https://github.com/TankerHQ/dmenv/releases/download/v0.7.0/dmenv-linux -o dmenv
+  - curl -L https://github.com/TankerHQ/dmenv/releases/download/v0.20.0/dmenv-linux -o dmenv
   - chmod u+x dmenv
   - ./dmenv install
 
