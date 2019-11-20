@@ -11,6 +11,7 @@ matrix:
       script:
         - ./dmenv run -- pytest --cov=tankersdk_identity
         - codecov
+    - python: "3.8"
 
 install:
   - curl -L https://github.com/TankerHQ/dmenv/releases/download/v0.7.0/dmenv-linux -o dmenv
