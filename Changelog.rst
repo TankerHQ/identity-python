@@ -1,3 +1,9 @@
+1.2.1
+===
+
+* Add Python 3.8 support
+* Bump internal dependencies
+
 1.2
 ===
 
