@@ -1,0 +1,74 @@
+name: Tests
+on: [push]
+
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.5, 3.6, 3.7, 3.8]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dmenv
+        uses: TankerHQ/dmenv-install-action@v1.0.0
+        with:
+          dmenv-version: 0.20.0
+      - name: Prepare project for development
+        run: dmenv install
+      - name: Run tests
+        run: dmenv run -- pytest
+
+  python34:
+    runs-on: ubuntu-16.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.4
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.4
+      - name: Install dmenv
+        uses: TankerHQ/dmenv-install-action@v1.0.0
+        with:
+          dmenv-version: 0.20.0
+      - name: Prepare project for development
+        run: dmenv install
+      - name: Run tests
+        run: dmenv run -- pytest
+
+  python2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 2.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 2.7
+      - name: Install dependencies
+        run: pip install -r requirements.lock
+      - name: Run tests
+        run: pytest
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Install dmenv
+        uses: TankerHQ/dmenv-install-action@v1.0.0
+        with:
+          dmenv-version: 0.20.0
+      - name: Prepare project for development
+        run: dmenv install
+      - name: Run tests
+        run: dmenv run -- pytest --cov=tankersdk_identity --cov-report=xml --cov-report=term
+      - name: Send coverage
+        run: dmenv run -- codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
