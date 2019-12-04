@@ -120,3 +120,14 @@ def test_get_public_from_bad_identity():
     fake_id = base64.b64encode(json.dumps({"target": "stuffs"}).encode()).decode()
     with pytest.raises(ValueError):
         tankersdk_identity.get_public_identity(fake_id)
+
+
+def test_mistmatch_app_id_and_secret(test_app):
+    user_id = "guido@tanker.io"
+    mismatching_app_id = "rB0/yEJWCUVYRtDZLtXaJqtneXQOsCSKrtmWw+V+ysc="
+    with pytest.raises(ValueError):
+        tankersdk_identity.create_identity(
+            mismatching_app_id,
+            test_app["secret"],
+            user_id
+        )

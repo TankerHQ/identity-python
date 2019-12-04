@@ -6,9 +6,22 @@ from tankersdk_identity.crypto import BLOCK_HASH_SIZE, CHECK_HASH_BLOCK_SIZE, US
 import tankersdk_identity.crypto
 
 
+APP_SECRET_SIZE = 64
+APP_PUBLIC_KEY_SIZE = 32
+AUTHOR_SIZE = 32
+APP_CREATION_NATURE = 1
+
+
 def _hash_user_id(app_id, user_id):
     user_id_buff = user_id.encode()
     to_hash = user_id_buff + app_id
+    return tankersdk_identity.crypto.generichash(to_hash, size=BLOCK_HASH_SIZE)
+
+
+def _generate_app_id(app_secret):
+    public_key = app_secret[APP_SECRET_SIZE - APP_PUBLIC_KEY_SIZE:APP_SECRET_SIZE]
+    # A bit convoluted, to make it work with python 2.7
+    to_hash = bytes(bytearray([APP_CREATION_NATURE] + [0] * AUTHOR_SIZE)) + public_key
     return tankersdk_identity.crypto.generichash(to_hash, size=BLOCK_HASH_SIZE)
 
 
@@ -59,6 +72,10 @@ def create_identity(app_id, app_secret, user_id):
     app_id_buf = base64.b64decode(app_id)
     secret_buf = base64.b64decode(app_secret)
     hashed_user_id = _hash_user_id(app_id_buf, user_id)
+
+    generated_app_id = _generate_app_id(secret_buf)
+    if generated_app_id != app_id_buf:
+        raise ValueError("App secret and app ID mismatch")
 
     e_public_key, e_secret_key = tankersdk_identity.crypto.sign_keypair()
     to_sign = e_public_key + hashed_user_id
