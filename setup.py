@@ -15,17 +15,8 @@ setup(
     author="Kontrol SAS",
     packages=find_packages(),
     install_requires=["PyNaCl"],
-    extras_require={
-        "dev": [
-            "codecov",
-            "pytest",
-            "pytest-cov",
-            "twine",
-        ],
-    },
+    extras_require={"dev": ["codecov", "pytest", "pytest-cov", "twine"]},
     classifiers=[
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",

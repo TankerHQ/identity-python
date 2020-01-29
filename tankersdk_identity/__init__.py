@@ -20,7 +20,6 @@ def _hash_user_id(app_id, user_id):
 
 def _generate_app_id(app_secret):
     public_key = app_secret[APP_SECRET_SIZE - APP_PUBLIC_KEY_SIZE:APP_SECRET_SIZE]
-    # A bit convoluted, to make it work with python 2.7
     to_hash = bytes(bytearray([APP_CREATION_NATURE] + [0] * AUTHOR_SIZE)) + public_key
     return tankersdk_identity.crypto.generichash(to_hash, size=BLOCK_HASH_SIZE)
 
