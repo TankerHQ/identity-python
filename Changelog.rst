@@ -1,3 +1,8 @@
+1.2.2
+===
+
+* Drop Python2 support
+
 1.2.1
 ===
 

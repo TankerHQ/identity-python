@@ -39,19 +39,6 @@ jobs:
       - name: Run tests
         run: dmenv run -- pytest
 
-  python2:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Set up Python 2.7
-        uses: actions/setup-python@v1
-        with:
-          python-version: 2.7
-      - name: Install dependencies
-        run: pip install -r requirements.lock
-      - name: Run tests
-        run: pytest
-
   coverage:
     runs-on: ubuntu-latest
     steps:
