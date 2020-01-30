@@ -1,3 +1,9 @@
+1.2.2
+===
+
+* Drop Python2 support
+* Drop Python 3.4 support
+
 1.2.1
 ===
 
