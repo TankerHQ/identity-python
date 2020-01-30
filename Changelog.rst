@@ -1,8 +1,13 @@
-1.2.2
+1.3.1
 ===
 
 * Drop Python2 support
 * Drop Python 3.4 support
+
+1.3.0
+===
+
+* When generating an identity, we now check that the app secret and the app ID match.
 
 1.2.1
 ===
