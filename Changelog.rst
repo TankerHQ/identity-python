@@ -1,3 +1,8 @@
+1.3.2
+===
+
+* Drop upgrade_user_token
+
 1.3.1
 ===
 

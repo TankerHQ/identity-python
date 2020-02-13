@@ -43,30 +43,6 @@ def _deserialize_identity(identity):
     return json.loads(identity_json)
 
 
-def generate_user_token(app_id, app_secret, user_id):
-    app_id_buf = base64.b64decode(app_id)
-    secret_buf = base64.b64decode(app_secret)
-    hashed_user_id = _hash_user_id(app_id_buf, user_id)
-
-    e_public_key, e_secret_key = tankersdk_identity.crypto.sign_keypair()
-    to_sign = e_public_key + hashed_user_id
-    delegation_signature = tankersdk_identity.crypto.sign_detached(to_sign, secret_buf)
-    random_buf = os.urandom(USER_SECRET_SIZE - 1)
-    hashed = tankersdk_identity.crypto.generichash(random_buf + hashed_user_id, size=CHECK_HASH_BLOCK_SIZE)
-    user_secret = random_buf + bytearray([hashed[0]])
-
-    user_token = {
-        "ephemeral_private_signature_key": base64.b64encode(e_secret_key).decode(),
-        "ephemeral_public_signature_key": base64.b64encode(e_public_key).decode(),
-        "user_id": base64.b64encode(hashed_user_id).decode(),
-        "delegation_signature": base64.b64encode(delegation_signature).decode(),
-        "user_secret": base64.b64encode(user_secret).decode(),
-    }
-
-    as_json = json.dumps(user_token)
-    return base64.b64encode(as_json.encode()).decode()
-
-
 def create_identity(app_id, app_secret, user_id):
     app_id_buf = base64.b64decode(app_id)
     secret_buf = base64.b64decode(app_secret)
@@ -138,25 +114,3 @@ def get_public_identity(identity):
     as_json = json.dumps(public_identity)
     return base64.b64encode(as_json.encode()).decode()
 
-
-def upgrade_user_token(app_id, user_id, user_token):
-    app_id_buf = base64.b64decode(app_id)
-    hashed_user_id = _hash_user_id(app_id_buf, user_id)
-    token_json = base64.b64decode(user_token).decode()
-    token_obj = json.loads(token_json)
-
-    if base64.b64encode(hashed_user_id).decode() != token_obj['user_id']:
-        raise ValueError("Invalid user ID provided")
-
-    identity = {
-        "trustchain_id": app_id,
-        "target": "user",
-        "value": token_obj["user_id"],
-        "user_secret": token_obj["user_secret"],
-        "ephemeral_public_signature_key": token_obj["ephemeral_public_signature_key"],
-        "ephemeral_private_signature_key": token_obj["ephemeral_private_signature_key"],
-        "delegation_signature": token_obj["delegation_signature"],
-    }
-
-    as_json = json.dumps(identity)
-    return base64.b64encode(as_json.encode()).decode()
