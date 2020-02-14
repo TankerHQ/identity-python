@@ -1,13 +1,9 @@
-1.3.2
-===
-
-* Drop upgrade_user_token
-
 1.3.1
 ===
 
 * Drop Python2 support
 * Drop Python 3.4 support
+* Drop upgrade_user_token method
 
 1.3.0
 ===
