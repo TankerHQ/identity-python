@@ -4,7 +4,7 @@ version = "1.3.1"
 description = "Tanker identity library"
 authors = ["Tanker team <tech@tanker.io>"]
 homepage = "https://github.com/TankerHQ/identity-python"
-
+readme = "README.rst"
 
 [tool.poetry.dependencies]
 python = "^3.5"
@@ -18,3 +18,4 @@ pytest-cov = "2.7.1"
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
+
