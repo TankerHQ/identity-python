@@ -1,3 +1,8 @@
+1.3.2
+===
+
+* Publish readme on pypi.org
+
 1.3.1
 ===
 
