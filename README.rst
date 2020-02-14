@@ -63,20 +63,6 @@ Return the public identity from an identity. This public identity can be used by
 **identity**
    A secret identity.
 
-.. code-block:: python
-
-    tankersdk_identity.upgrade_user_token(app_id, user_id, user_token)
-
-Return a Tanker identity from Tanker v1 user Token. Tanker v1 used a user token, when migrating to Tanker v2 you should use this function to migrate you used tokens to identities. This identity is secret and must only be given to a user who has been authenticated by your application. This identity is used by the Tanker client SDK to open a Tanker session
-
-**app_id**
-   The app ID. You can access it from the `Tanker dashboard <https://dashboard.tanker.io>`_.
-
-**user_id**
-   The ID of a user in your application.
-
-**user_token**
-   The Tanker v1 user token.
 
 Going further
 -------------
