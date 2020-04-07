@@ -45,10 +45,6 @@ def identity():
         tanker_config = app.config["TANKER"]
         app_id = tanker_config["appId"]
         app_secret = tanker_config["appSecret"]
-        identity = tankersdk_identity.create_identity(
-            app_id,
-            app_secret,
-            user_id
-        )
+        identity = tankersdk_identity.create_identity(app_id, app_secret, user_id)
 
     return identity

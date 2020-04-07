@@ -6,15 +6,17 @@ import tankersdk_identity
 from tankersdk_identity import _deserialize_identity
 
 import pytest
-from tankersdk_identity.test.helpers import corrupt_buffer, check_user_secret, check_signature
+from tankersdk_identity.test.helpers import (
+    corrupt_buffer,
+    check_user_secret,
+    check_signature,
+)
 
 
 def generate_test_identity(test_app):
     user_id = "guido@tanker.io"
     b64_identity = tankersdk_identity.create_identity(
-        test_app["id"],
-        test_app["secret"],
-        user_id
+        test_app["id"], test_app["secret"], user_id
     )
     identity = _deserialize_identity(b64_identity)
     return identity
@@ -39,14 +41,14 @@ def test_generate_identity_invalid_signature(test_app):
 
 
 def test_provisional_identities_are_different(test_app):
-    identity_alice = _deserialize_identity(tankersdk_identity.create_provisional_identity(
-        test_app["id"],
-        "alice@gmail.ru"
-    ))
-    identity_bob = _deserialize_identity(tankersdk_identity.create_provisional_identity(
-        test_app["id"],
-        "bob@office360.com"
-    ))
+    identity_alice = _deserialize_identity(
+        tankersdk_identity.create_provisional_identity(test_app["id"], "alice@gmail.ru")
+    )
+    identity_bob = _deserialize_identity(
+        tankersdk_identity.create_provisional_identity(
+            test_app["id"], "bob@office360.com"
+        )
+    )
 
     for key in ["public_encryption_key", "public_signature_key"]:
         assert identity_alice[key] != identity_bob[key]
@@ -54,11 +56,12 @@ def test_provisional_identities_are_different(test_app):
 
 def test_public_identity_matches_provisional_identity(test_app):
     encoded_identity = tankersdk_identity.create_provisional_identity(
-        test_app["id"],
-        "snowy@nasa.gov"
+        test_app["id"], "snowy@nasa.gov"
     )
     identity = _deserialize_identity(encoded_identity)
-    public_identity = _deserialize_identity(tankersdk_identity.get_public_identity(encoded_identity))
+    public_identity = _deserialize_identity(
+        tankersdk_identity.get_public_identity(encoded_identity)
+    )
 
     assert public_identity["trustchain_id"] == test_app["id"]
     assert public_identity["target"] == "email"
@@ -69,12 +72,12 @@ def test_public_identity_matches_provisional_identity(test_app):
 def test_public_identity_matches_full_identity(test_app):
     user_id = "happy@little.cloud"
     encoded_identity = tankersdk_identity.create_identity(
-        test_app["id"],
-        test_app["secret"],
-        user_id
+        test_app["id"], test_app["secret"], user_id
     )
     identity = _deserialize_identity(encoded_identity)
-    public_identity = _deserialize_identity(tankersdk_identity.get_public_identity(encoded_identity))
+    public_identity = _deserialize_identity(
+        tankersdk_identity.get_public_identity(encoded_identity)
+    )
 
     assert public_identity["trustchain_id"] == test_app["id"]
     assert public_identity["target"] == "user"
@@ -92,7 +95,5 @@ def test_mistmatch_app_id_and_secret(test_app):
     mismatching_app_id = "rB0/yEJWCUVYRtDZLtXaJqtneXQOsCSKrtmWw+V+ysc="
     with pytest.raises(ValueError):
         tankersdk_identity.create_identity(
-            mismatching_app_id,
-            test_app["secret"],
-            user_id
+            mismatching_app_id, test_app["secret"], user_id
         )
