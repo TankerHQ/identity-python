@@ -1,3 +1,9 @@
+1.3.3
+=====
+
+* Add type annotations
+* Format code with ``black``
+
 1.3.2
 =====
 
