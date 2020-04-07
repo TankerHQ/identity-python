@@ -1,8 +1,9 @@
+from typing import Dict
 import pytest
 
 
-@pytest.fixture
-def test_app():
+@pytest.fixture  # type: ignore
+def test_app() -> Dict[str, str]:
     """ Note: this was generated with the Javascript SDK. We keep it to check Javascript
     and Python code are interoperable
 
