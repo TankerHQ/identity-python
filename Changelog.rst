@@ -1,3 +1,8 @@
+1.3.4
+=====
+
+* Add missing ``py.typed`` file in the package
+
 1.3.3
 =====
 
