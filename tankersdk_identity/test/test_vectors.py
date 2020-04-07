@@ -1,3 +1,4 @@
+from typing import Dict, Union
 import base64
 import json
 
@@ -7,7 +8,7 @@ TRUSTCHAIN = {
     "id": "tpoxyNzh0hU9G2i9agMvHyyd+pO6zGCjO9BfhrCLjd4=",
     "sk": "cTMoGGUKhwN47ypq4xAXAtVkNWeyUtMltQnYwJhxWYSvqjPVGmXd2wwa7y17QtPTZhn8bxb015CZC/e4ZI7+MQ==",
     "pk": "r6oz1Rpl3dsMGu8te0LT02YZ/G8W9NeQmQv3uGSO/jE=",
-}
+}  # type:  Dict[str, str]
 USER_ID = "b_eich"
 USER_EMAIL = "brendan.eich@tanker.io"
 HASHED_USER_ID = base64.b64encode(
@@ -19,7 +20,7 @@ PUBLIC_IDENTITY = "eyJ0YXJnZXQiOiJ1c2VyIiwidHJ1c3RjaGFpbl9pZCI6InRwb3h5TnpoMGhVO
 PUBLIC_PROVISIONAL_IDENTITY = "eyJ0cnVzdGNoYWluX2lkIjoidHBveHlOemgwaFU5RzJpOWFnTXZIeXlkK3BPNnpHQ2pPOUJmaHJDTGpkND0iLCJ0YXJnZXQiOiJlbWFpbCIsInZhbHVlIjoiYnJlbmRhbi5laWNoQHRhbmtlci5pbyIsInB1YmxpY19lbmNyeXB0aW9uX2tleSI6Ii8yajRkSTNyOFBsdkNOM3VXNEhoQTV3QnRNS09jQUNkMzhLNk4wcSttRlU9IiwicHVibGljX3NpZ25hdHVyZV9rZXkiOiJXN1FFUUJ1OUZYY1hJcE9ncTYydFB3Qml5RkFicFQxckFydUQwaC9OclRBPSJ9"
 
 
-def test_parse_valid_permanent_identity():
+def test_parse_valid_permanent_identity() -> None:
     identity = _deserialize_identity(PERMANENT_IDENTITY)
 
     assert identity["trustchain_id"] == TRUSTCHAIN["id"]
@@ -40,7 +41,7 @@ def test_parse_valid_permanent_identity():
     assert identity["user_secret"] == "7FSf/n0e76QT3s0DkvetRVVJhXZGEjOxj5EWAFexvjI="
 
 
-def test_parse_valid_provisional_identity():
+def test_parse_valid_provisional_identity() -> None:
     identity = _deserialize_identity(PROVISIONAL_IDENTITY)
 
     assert identity["trustchain_id"] == TRUSTCHAIN["id"]
@@ -64,7 +65,7 @@ def test_parse_valid_provisional_identity():
     )
 
 
-def test_parse_valid_public_identity():
+def test_parse_valid_public_identity() -> None:
     identity = _deserialize_identity(PUBLIC_IDENTITY)
 
     assert identity["trustchain_id"] == TRUSTCHAIN["id"]
@@ -72,7 +73,7 @@ def test_parse_valid_public_identity():
     assert identity["value"] == HASHED_USER_ID
 
 
-def test_parse_valid_public_provisional_identity():
+def test_parse_valid_public_provisional_identity() -> None:
     identity = _deserialize_identity(PUBLIC_PROVISIONAL_IDENTITY)
 
     assert identity["trustchain_id"] == TRUSTCHAIN["id"]

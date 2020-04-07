@@ -25,3 +25,6 @@ jobs:
 
       - name: Run black
         run: python -m poetry run black --check .
+
+      - name: Run mypy
+        run: python -m poetry run mypy

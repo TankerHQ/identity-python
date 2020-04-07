@@ -1,3 +1,4 @@
+from typing import Dict
 import base64
 import json
 import tankersdk_identity.crypto
@@ -9,19 +10,19 @@ from tankersdk_identity.crypto import (
 )
 
 
-def parse_b64_json(b64_json):
+def parse_b64_json(b64_json: str) -> Dict[str, str]:
     json_obj = base64.b64decode(b64_json)
-    return json.loads(json_obj.decode())
+    return json.loads(json_obj.decode())  # type: ignore
 
 
-def corrupt_buffer(buffer):
+def corrupt_buffer(buffer: bytes) -> bytes:
     """ Make sure one part of the buffer gets changed """
     array = bytearray(buffer)
     array[0] = (array[0] + 1) % 255
     return bytes(array)
 
 
-def check_user_secret(token_or_identity, id_key):
+def check_user_secret(token_or_identity: Dict[str, str], id_key: str) -> None:
     hashed_user_id = base64.b64decode(token_or_identity[id_key])
     user_secret = base64.b64decode(token_or_identity["user_secret"])
 
@@ -32,7 +33,9 @@ def check_user_secret(token_or_identity, id_key):
     assert user_secret[-1] == control[0]
 
 
-def check_signature(public_key, token, signature, id_key):
+def check_signature(
+    public_key: str, token: Dict[str, str], signature: bytes, id_key: str
+) -> None:
     e_pub_key = base64.b64decode(token["ephemeral_public_signature_key"])
     user_id = base64.b64decode(token[id_key])
     signed_data = e_pub_key + user_id

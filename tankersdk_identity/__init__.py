@@ -1,3 +1,4 @@
+from typing import Dict, Tuple
 import base64
 import json
 import os
@@ -16,19 +17,23 @@ AUTHOR_SIZE = 32
 APP_CREATION_NATURE = 1
 
 
-def _hash_user_id(app_id, user_id):
+def _hash_user_id(app_id: bytes, user_id: str) -> bytes:
     user_id_buff = user_id.encode()
     to_hash = user_id_buff + app_id
     return tankersdk_identity.crypto.generichash(to_hash, size=BLOCK_HASH_SIZE)
 
 
-def _generate_app_id(app_secret):
+def _generate_app_id(app_secret: bytes) -> bytes:
     public_key = app_secret[APP_SECRET_SIZE - APP_PUBLIC_KEY_SIZE : APP_SECRET_SIZE]
     to_hash = bytes(bytearray([APP_CREATION_NATURE] + [0] * AUTHOR_SIZE)) + public_key
     return tankersdk_identity.crypto.generichash(to_hash, size=BLOCK_HASH_SIZE)
 
 
-def _generate_preshare_keys():
+KeyPair = Dict[str, str]
+PreShareKeys = Tuple[KeyPair, KeyPair]
+
+
+def _generate_preshare_keys() -> PreShareKeys:
     enc_pub_key, enc_priv_key = tankersdk_identity.crypto.box_keypair()
     encryption_keys = {
         "public_key": base64.b64encode(enc_pub_key).decode(),
@@ -42,12 +47,12 @@ def _generate_preshare_keys():
     return encryption_keys, signature_keys
 
 
-def _deserialize_identity(identity):
+def _deserialize_identity(identity: str) -> Dict[str, str]:
     identity_json = base64.b64decode(identity).decode()
-    return json.loads(identity_json)
+    return json.loads(identity_json)  # type: ignore
 
 
-def create_identity(app_id, app_secret, user_id):
+def create_identity(app_id: str, app_secret: str, user_id: str) -> str:
     app_id_buf = base64.b64decode(app_id)
     secret_buf = base64.b64decode(app_secret)
     hashed_user_id = _hash_user_id(app_id_buf, user_id)
@@ -79,7 +84,7 @@ def create_identity(app_id, app_secret, user_id):
     return base64.b64encode(as_json.encode()).decode()
 
 
-def create_provisional_identity(app_id, email):
+def create_provisional_identity(app_id: str, email: str) -> str:
     encryption_keys, signature_keys = _generate_preshare_keys()
 
     identity = {
@@ -90,13 +95,13 @@ def create_provisional_identity(app_id, email):
         "private_encryption_key": encryption_keys["private_key"],
         "public_signature_key": signature_keys["public_key"],
         "private_signature_key": signature_keys["private_key"],
-    }
+    }  # type: Dict[str, str]
 
     as_json = json.dumps(identity)
     return base64.b64encode(as_json.encode()).decode()
 
 
-def get_public_identity(identity):
+def get_public_identity(identity: str) -> str:
     identity_obj = _deserialize_identity(identity)
 
     if identity_obj["target"] == "user":
