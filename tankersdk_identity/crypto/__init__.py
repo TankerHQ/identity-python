@@ -1,5 +1,10 @@
 from nacl.exceptions import BadSignatureError
-from nacl.bindings.crypto_sign import crypto_sign, crypto_sign_keypair, crypto_sign_open, crypto_sign_BYTES
+from nacl.bindings.crypto_sign import (
+    crypto_sign,
+    crypto_sign_keypair,
+    crypto_sign_open,
+    crypto_sign_BYTES,
+)
 from nacl.bindings.crypto_box import crypto_box_keypair
 from nacl.bindings.crypto_generichash import generichash_blake2b_salt_personal
 

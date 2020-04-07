@@ -2,7 +2,11 @@ import base64
 import json
 import tankersdk_identity.crypto
 
-from tankersdk_identity.crypto import BLOCK_HASH_SIZE, CHECK_HASH_BLOCK_SIZE, USER_SECRET_SIZE
+from tankersdk_identity.crypto import (
+    BLOCK_HASH_SIZE,
+    CHECK_HASH_BLOCK_SIZE,
+    USER_SECRET_SIZE,
+)
 
 
 def parse_b64_json(b64_json):

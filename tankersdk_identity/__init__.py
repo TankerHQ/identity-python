@@ -2,7 +2,11 @@ import base64
 import json
 import os
 
-from tankersdk_identity.crypto import BLOCK_HASH_SIZE, CHECK_HASH_BLOCK_SIZE, USER_SECRET_SIZE
+from tankersdk_identity.crypto import (
+    BLOCK_HASH_SIZE,
+    CHECK_HASH_BLOCK_SIZE,
+    USER_SECRET_SIZE,
+)
 import tankersdk_identity.crypto
 
 
@@ -19,7 +23,7 @@ def _hash_user_id(app_id, user_id):
 
 
 def _generate_app_id(app_secret):
-    public_key = app_secret[APP_SECRET_SIZE - APP_PUBLIC_KEY_SIZE:APP_SECRET_SIZE]
+    public_key = app_secret[APP_SECRET_SIZE - APP_PUBLIC_KEY_SIZE : APP_SECRET_SIZE]
     to_hash = bytes(bytearray([APP_CREATION_NATURE] + [0] * AUTHOR_SIZE)) + public_key
     return tankersdk_identity.crypto.generichash(to_hash, size=BLOCK_HASH_SIZE)
 
@@ -56,7 +60,9 @@ def create_identity(app_id, app_secret, user_id):
     to_sign = e_public_key + hashed_user_id
     delegation_signature = tankersdk_identity.crypto.sign_detached(to_sign, secret_buf)
     random_buf = os.urandom(USER_SECRET_SIZE - 1)
-    hashed = tankersdk_identity.crypto.generichash(random_buf + hashed_user_id, size=CHECK_HASH_BLOCK_SIZE)
+    hashed = tankersdk_identity.crypto.generichash(
+        random_buf + hashed_user_id, size=CHECK_HASH_BLOCK_SIZE
+    )
     user_secret = random_buf + bytearray([hashed[0]])
 
     identity = {
@@ -99,7 +105,10 @@ def get_public_identity(identity):
             "target": identity_obj["target"],
             "value": identity_obj["value"],
         }
-    elif "public_encryption_key" in identity_obj and "public_signature_key" in identity_obj:
+    elif (
+        "public_encryption_key" in identity_obj
+        and "public_signature_key" in identity_obj
+    ):
         # We have a provisional identity
         public_identity = {
             "trustchain_id": identity_obj["trustchain_id"],
@@ -113,4 +122,3 @@ def get_public_identity(identity):
 
     as_json = json.dumps(public_identity)
     return base64.b64encode(as_json.encode()).decode()
-
