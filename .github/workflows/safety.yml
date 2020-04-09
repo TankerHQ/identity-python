@@ -1,9 +1,7 @@
-name: tests
+name: safety
 on:
   schedule:
     - cron:  '0 1 * * *'
-
-
 
 jobs:
   safety:
