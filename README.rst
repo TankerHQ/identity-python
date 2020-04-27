@@ -11,6 +11,9 @@ Tanker identity generation in Python for the `Tanker SDK <https://tanker.io/docs
 
 .. image:: https://img.shields.io/codecov/c/github/TankerHQ/identity-python.svg?label=Coverage
     :target: https://codecov.io/gh/TankerHQ/identity-python
+    
+.. image:: https://img.shields.io/badge/deps%20scanning-pyup.io-green
+     :target: https://github.com/TankerHQ/identity-python/workflows/safety/
 
 
 Installation
