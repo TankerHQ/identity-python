@@ -5,7 +5,7 @@
 Identity SDK
 ============
 
-Tanker identity generation in Python for the `Tanker SDK <https://tanker.io/docs/latest>`_.
+Tanker identity generation in Python for the `Tanker SDK <https://docs.tanker.io/latest/>`_.
 
 .. image:: https://github.com/TankerHQ/identity-python/workflows/Tests/badge.svg
     :target: https://github.com/TankerHQ/identity-python/actions
@@ -75,6 +75,6 @@ Going further
 -------------
 
 
-Read more about identities in the `Tanker guide <https://tanker.io/docs/latest/guide/server/>`_.
+Read more about identities in the `Tanker guide <https://docs.tanker.io/latest/guides/identity-management/>`_.
 
 Check the `examples <https://github.com/TankerHQ/identity-python/tree/master/examples>`_ folder for usage examples.
