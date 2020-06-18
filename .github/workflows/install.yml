@@ -1,0 +1,22 @@
+name: install
+on:
+  schedule:
+    - cron:  '0 1 * * *'
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.5, 3.6, 3.7, 3.8]
+    steps:
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install identity SDK
+        run: |
+            python -m pip install tankersdk-identity
+            python -c 'import tankersdk_identity; tankersdk_identity.create_provisional_identity("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=", "test@tanker.io")'
