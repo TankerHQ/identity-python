@@ -79,6 +79,10 @@ def _serialize_identity(identity: Dict[str, Any]) -> str:
     return base64.b64encode(as_json.encode()).decode()
 
 
+def upgrade_identity(identity: str) -> str:
+    return _serialize_identity(_deserialize_identity(identity))
+
+
 def create_identity(app_id: str, app_secret: str, user_id: str) -> str:
     app_id_buf = base64.b64decode(app_id)
     secret_buf = base64.b64decode(app_secret)
