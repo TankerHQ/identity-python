@@ -2,7 +2,7 @@ from typing import Dict, Union
 import base64
 import json
 
-from tankersdk_identity import _hash_user_id, _deserialize_identity
+from tankersdk_identity import _hash_user_id, _deserialize_identity, _serialize_identity
 
 TRUSTCHAIN = {
     "id": "tpoxyNzh0hU9G2i9agMvHyyd+pO6zGCjO9BfhrCLjd4=",
@@ -87,3 +87,11 @@ def test_parse_valid_public_provisional_identity() -> None:
         identity["public_encryption_key"]
         == "/2j4dI3r8PlvCN3uW4HhA5wBtMKOcACd38K6N0q+mFU="
     )
+
+
+def test_ordered_json() -> None:
+    obj = {"c": 2, "b": None, "a": {"x": "y"}}
+    expected_json = '{"a":{"x":"y"},"b":null,"c":2}'
+    b64json = _serialize_identity(obj)
+    identity_json = base64.b64decode(b64json).decode()
+    assert identity_json == expected_json

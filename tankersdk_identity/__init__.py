@@ -1,4 +1,5 @@
-from typing import Dict, Tuple
+from collections.abc import Mapping
+from typing import Dict, Tuple, Any
 import base64
 import json
 import os
@@ -52,6 +53,23 @@ def _deserialize_identity(identity: str) -> Dict[str, str]:
     return json.loads(identity_json)  # type: ignore
 
 
+def _to_ordered_json(obj: Dict[str, Any]) -> str:
+    keys = sorted(obj.keys())
+    items = []
+    for k in keys:
+        if isinstance(obj[k], Mapping):
+            val = _to_ordered_json(obj[k])
+        else:
+            val = json.dumps(obj[k], separators=(",", ":"))
+        items.append(f'"{k}":{val}')
+    return f"{{{','.join(items)}}}"
+
+
+def _serialize_identity(identity: Dict[str, Any]) -> str:
+    as_json = _to_ordered_json(identity)
+    return base64.b64encode(as_json.encode()).decode()
+
+
 def create_identity(app_id: str, app_secret: str, user_id: str) -> str:
     app_id_buf = base64.b64decode(app_id)
     secret_buf = base64.b64decode(app_secret)
@@ -80,8 +98,7 @@ def create_identity(app_id: str, app_secret: str, user_id: str) -> str:
         "delegation_signature": base64.b64encode(delegation_signature).decode(),
     }
 
-    as_json = json.dumps(identity)
-    return base64.b64encode(as_json.encode()).decode()
+    return _serialize_identity(identity)
 
 
 def create_provisional_identity(app_id: str, email: str) -> str:
@@ -97,8 +114,7 @@ def create_provisional_identity(app_id: str, email: str) -> str:
         "private_signature_key": signature_keys["private_key"],
     }  # type: Dict[str, str]
 
-    as_json = json.dumps(identity)
-    return base64.b64encode(as_json.encode()).decode()
+    return _serialize_identity(identity)
 
 
 def get_public_identity(identity: str) -> str:
@@ -125,5 +141,4 @@ def get_public_identity(identity: str) -> str:
     else:
         raise ValueError("Not a valid Tanker identity")
 
-    as_json = json.dumps(public_identity)
-    return base64.b64encode(as_json.encode()).decode()
+    return _serialize_identity(public_identity)
