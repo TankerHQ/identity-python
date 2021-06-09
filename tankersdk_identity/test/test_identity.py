@@ -64,8 +64,13 @@ def test_public_identity_matches_provisional_identity(test_app: Dict[str, str]) 
         tankersdk_identity.get_public_identity(encoded_identity)
     )
 
+    hashed_email = tankersdk_identity.crypto.generichash(
+        identity["value"].encode(), size=tankersdk_identity.BLOCK_HASH_SIZE
+    )
+
     assert public_identity["trustchain_id"] == test_app["id"]
-    assert public_identity["target"] == "email"
+    assert public_identity["target"] == "hashed_email"
+    assert public_identity["value"] == base64.b64encode(hashed_email).decode()
     assert public_identity["public_signature_key"] == identity["public_signature_key"]
     assert public_identity["public_encryption_key"] == identity["public_encryption_key"]
 
