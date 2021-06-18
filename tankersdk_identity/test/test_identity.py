@@ -89,7 +89,7 @@ def test_public_identity_matches_sms_provisional_identity(
     )
 
     hash_salt = tankersdk_identity.crypto.generichash(
-        identity["private_signature_key"].encode(),
+        base64.b64decode(identity["private_signature_key"]),
         size=tankersdk_identity.BLOCK_HASH_SIZE,
     )
     hashed_number = tankersdk_identity.crypto.generichash(
