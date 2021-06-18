@@ -1,3 +1,4 @@
+import base64
 from typing import Tuple, cast
 from nacl.exceptions import BadSignatureError
 from nacl.bindings.crypto_sign import (
@@ -25,6 +26,17 @@ class InvalidSignature(Error):
 
 def generichash(buffer: bytes, size: int) -> bytes:
     return generichash_blake2b_salt_personal(buffer, digest_size=size)  # type: ignore
+
+
+def hashed_provisional_email(email: str) -> str:
+    hashed_value = generichash(email.encode(), BLOCK_HASH_SIZE)
+    return base64.b64encode(hashed_value).decode()
+
+
+def hashed_provisional_value(value: str, private_signature_key: str) -> str:
+    hash_salt = generichash(base64.b64decode(private_signature_key), BLOCK_HASH_SIZE)
+    hashed_value = generichash(hash_salt + value.encode(), BLOCK_HASH_SIZE)
+    return base64.b64encode(hashed_value).decode()
 
 
 def sign_keypair() -> Tuple[bytes, bytes]:
