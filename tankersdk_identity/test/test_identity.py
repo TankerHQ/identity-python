@@ -77,6 +77,32 @@ def test_public_identity_matches_provisional_identity(test_app: Dict[str, str]) 
     assert public_identity["public_encryption_key"] == identity["public_encryption_key"]
 
 
+def test_public_identity_matches_sms_provisional_identity(
+    test_app: Dict[str, str]
+) -> None:
+    encoded_identity = tankersdk_identity.create_provisional_identity(
+        test_app["id"], "phone_number", "+611223344"
+    )
+    identity = _deserialize_identity(encoded_identity)
+    public_identity = _deserialize_identity(
+        tankersdk_identity.get_public_identity(encoded_identity)
+    )
+
+    hash_salt = tankersdk_identity.crypto.generichash(
+        identity["private_signature_key"].encode(),
+        size=tankersdk_identity.BLOCK_HASH_SIZE,
+    )
+    hashed_number = tankersdk_identity.crypto.generichash(
+        hash_salt + identity["value"].encode(), size=tankersdk_identity.BLOCK_HASH_SIZE
+    )
+
+    assert public_identity["trustchain_id"] == test_app["id"]
+    assert public_identity["target"] == "phone_number"
+    assert public_identity["value"] == base64.b64encode(hashed_number).decode()
+    assert public_identity["public_signature_key"] == identity["public_signature_key"]
+    assert public_identity["public_encryption_key"] == identity["public_encryption_key"]
+
+
 def test_public_identity_matches_full_identity(test_app: Dict[str, str]) -> None:
     user_id = "happy@little.cloud"
     encoded_identity = tankersdk_identity.create_identity(
@@ -104,4 +130,14 @@ def test_mistmatch_app_id_and_secret(test_app: Dict[str, str]) -> None:
     with pytest.raises(ValueError):
         tankersdk_identity.create_identity(
             mismatching_app_id, test_app["secret"], user_id
+        )
+
+
+def test_invalid_provisional_target(test_app: Dict[str, str]) -> None:
+    with pytest.raises(ValueError):
+        tankersdk_identity.create_provisional_identity(
+            test_app["id"], "extremely invalid", "value"
+        )
+        tankersdk_identity.create_provisional_identity(
+            test_app["id"], "extremely invalid", "value"
         )
