@@ -83,10 +83,9 @@ def upgrade_identity(identityB64: str) -> str:
     identity = _deserialize_identity(identityB64)
     if identity["target"] == "email" and "private_encryption_key" not in identity:
         identity["target"] = "hashed_email"
-        hashed_email = tankersdk_identity.crypto.generichash(
-            identity["value"].encode(), size=BLOCK_HASH_SIZE
+        identity["value"] = tankersdk_identity.crypto.hashed_provisional_email(
+            identity["value"]
         )
-        identity["value"] = base64.b64encode(hashed_email).decode()
 
     return _serialize_identity(identity)
 
@@ -122,13 +121,16 @@ def create_identity(app_id: str, app_secret: str, user_id: str) -> str:
     return _serialize_identity(identity)
 
 
-def create_provisional_identity(app_id: str, email: str) -> str:
+def create_provisional_identity(app_id: str, target: str, value: str) -> str:
     encryption_keys, signature_keys = _generate_preshare_keys()
+
+    if target not in ["email", "phone_number"]:
+        raise ValueError("Unsupported provisional identity target")
 
     identity = {
         "trustchain_id": app_id,
-        "target": "email",
-        "value": email,
+        "target": target,
+        "value": value,
         "public_encryption_key": encryption_keys["public_key"],
         "private_encryption_key": encryption_keys["private_key"],
         "public_signature_key": signature_keys["public_key"],
@@ -157,10 +159,11 @@ def get_public_identity(identity: str) -> str:
 
         if target == "email":
             target = "hashed_email"
-            hashed_email = tankersdk_identity.crypto.generichash(
-                value.encode(), size=BLOCK_HASH_SIZE
+            value = tankersdk_identity.crypto.hashed_provisional_email(value)
+        elif target == "phone_number":
+            value = tankersdk_identity.crypto.hashed_provisional_value(
+                value, identity_obj["private_signature_key"]
             )
-            value = base64.b64encode(hashed_email).decode()
 
         public_identity = {
             "trustchain_id": identity_obj["trustchain_id"],

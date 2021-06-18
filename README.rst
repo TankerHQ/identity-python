@@ -51,7 +51,7 @@ Create a new Tanker identity. This identity is secret and must only be given to 
 
 .. code-block:: python
 
-    tankersdk_identity.create_provisional_identity(app_id, email)
+    tankersdk_identity.create_provisional_identity(app_id, "email", email)
 
 Create a Tanker provisional identity. It allows you to share a resource with a user who does not have an account in your application yet.
 

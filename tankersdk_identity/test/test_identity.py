@@ -43,11 +43,13 @@ def test_generate_identity_invalid_signature(test_app: Dict[str, str]) -> None:
 
 def test_provisional_identities_are_different(test_app: Dict[str, str]) -> None:
     identity_alice = _deserialize_identity(
-        tankersdk_identity.create_provisional_identity(test_app["id"], "alice@gmail.ru")
+        tankersdk_identity.create_provisional_identity(
+            test_app["id"], "email", "alice@gmail.ru"
+        )
     )
     identity_bob = _deserialize_identity(
         tankersdk_identity.create_provisional_identity(
-            test_app["id"], "bob@office360.com"
+            test_app["id"], "email", "bob@office360.com"
         )
     )
 
@@ -57,7 +59,7 @@ def test_provisional_identities_are_different(test_app: Dict[str, str]) -> None:
 
 def test_public_identity_matches_provisional_identity(test_app: Dict[str, str]) -> None:
     encoded_identity = tankersdk_identity.create_provisional_identity(
-        test_app["id"], "snowy@nasa.gov"
+        test_app["id"], "email", "snowy@nasa.gov"
     )
     identity = _deserialize_identity(encoded_identity)
     public_identity = _deserialize_identity(
