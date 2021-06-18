@@ -79,8 +79,16 @@ def _serialize_identity(identity: Dict[str, Any]) -> str:
     return base64.b64encode(as_json.encode()).decode()
 
 
-def upgrade_identity(identity: str) -> str:
-    return _serialize_identity(_deserialize_identity(identity))
+def upgrade_identity(identityB64: str) -> str:
+    identity = _deserialize_identity(identityB64)
+    if identity["target"] == "email" and "private_encryption_key" not in identity:
+        identity["target"] = "hashed_email"
+        hashed_email = tankersdk_identity.crypto.generichash(
+            identity["value"].encode(), size=BLOCK_HASH_SIZE
+        )
+        identity["value"] = base64.b64encode(hashed_email).decode()
+
+    return _serialize_identity(identity)
 
 
 def create_identity(app_id: str, app_secret: str, user_id: str) -> str:
@@ -144,10 +152,20 @@ def get_public_identity(identity: str) -> str:
         and "public_signature_key" in identity_obj
     ):
         # We have a provisional identity
+        target = identity_obj["target"]
+        value = identity_obj["value"]
+
+        if target == "email":
+            target = "hashed_email"
+            hashed_email = tankersdk_identity.crypto.generichash(
+                value.encode(), size=BLOCK_HASH_SIZE
+            )
+            value = base64.b64encode(hashed_email).decode()
+
         public_identity = {
             "trustchain_id": identity_obj["trustchain_id"],
-            "target": identity_obj["target"],
-            "value": identity_obj["value"],
+            "target": target,
+            "value": value,
             "public_signature_key": identity_obj["public_signature_key"],
             "public_encryption_key": identity_obj["public_encryption_key"],
         }
