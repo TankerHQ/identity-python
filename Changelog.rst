@@ -1,3 +1,8 @@
+2.16.0
+======
+
+* First synced release between platforms
+
 1.3.4
 =====
 
