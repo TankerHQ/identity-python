@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tankersdk-identity"
-version = "1.3.4"
+version = "2.16.1"
 description = "Tanker identity library"
 authors = ["Tanker team <tech@tanker.io>"]
 homepage = "https://github.com/TankerHQ/identity-python"
