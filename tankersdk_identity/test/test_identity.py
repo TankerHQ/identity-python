@@ -97,7 +97,7 @@ def test_public_identity_matches_sms_provisional_identity(
     )
 
     assert public_identity["trustchain_id"] == test_app["id"]
-    assert public_identity["target"] == "phone_number"
+    assert public_identity["target"] == "hashed_phone_number"
     assert public_identity["value"] == base64.b64encode(hashed_number).decode()
     assert public_identity["public_signature_key"] == identity["public_signature_key"]
     assert public_identity["public_encryption_key"] == identity["public_encryption_key"]
