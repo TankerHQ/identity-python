@@ -161,6 +161,7 @@ def get_public_identity(identity: str) -> str:
             target = "hashed_email"
             value = tankersdk_identity.crypto.hashed_provisional_email(value)
         elif target == "phone_number":
+            target = "hashed_" + target
             value = tankersdk_identity.crypto.hashed_provisional_value(
                 value, identity_obj["private_signature_key"]
             )
