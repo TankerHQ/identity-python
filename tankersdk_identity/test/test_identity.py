@@ -77,7 +77,7 @@ def test_public_identity_matches_provisional_identity(test_app: Dict[str, str]) 
     assert public_identity["public_encryption_key"] == identity["public_encryption_key"]
 
 
-def test_public_identity_matches_sms_provisional_identity(
+def test_public_identity_matches_phone_number_provisional_identity(
     test_app: Dict[str, str]
 ) -> None:
     encoded_identity = tankersdk_identity.create_provisional_identity(
