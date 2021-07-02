@@ -43,11 +43,13 @@ def test_generate_identity_invalid_signature(test_app: Dict[str, str]) -> None:
 
 def test_provisional_identities_are_different(test_app: Dict[str, str]) -> None:
     identity_alice = _deserialize_identity(
-        tankersdk_identity.create_provisional_identity(test_app["id"], "alice@gmail.ru")
+        tankersdk_identity.create_provisional_identity(
+            test_app["id"], "email", "alice@gmail.ru"
+        )
     )
     identity_bob = _deserialize_identity(
         tankersdk_identity.create_provisional_identity(
-            test_app["id"], "bob@office360.com"
+            test_app["id"], "email", "bob@office360.com"
         )
     )
 
@@ -57,7 +59,7 @@ def test_provisional_identities_are_different(test_app: Dict[str, str]) -> None:
 
 def test_public_identity_matches_provisional_identity(test_app: Dict[str, str]) -> None:
     encoded_identity = tankersdk_identity.create_provisional_identity(
-        test_app["id"], "snowy@nasa.gov"
+        test_app["id"], "email", "snowy@nasa.gov"
     )
     identity = _deserialize_identity(encoded_identity)
     public_identity = _deserialize_identity(
@@ -71,6 +73,32 @@ def test_public_identity_matches_provisional_identity(test_app: Dict[str, str]) 
     assert public_identity["trustchain_id"] == test_app["id"]
     assert public_identity["target"] == "hashed_email"
     assert public_identity["value"] == base64.b64encode(hashed_email).decode()
+    assert public_identity["public_signature_key"] == identity["public_signature_key"]
+    assert public_identity["public_encryption_key"] == identity["public_encryption_key"]
+
+
+def test_public_identity_matches_phone_number_provisional_identity(
+    test_app: Dict[str, str]
+) -> None:
+    encoded_identity = tankersdk_identity.create_provisional_identity(
+        test_app["id"], "phone_number", "+611223344"
+    )
+    identity = _deserialize_identity(encoded_identity)
+    public_identity = _deserialize_identity(
+        tankersdk_identity.get_public_identity(encoded_identity)
+    )
+
+    hash_salt = tankersdk_identity.crypto.generichash(
+        base64.b64decode(identity["private_signature_key"]),
+        size=tankersdk_identity.BLOCK_HASH_SIZE,
+    )
+    hashed_number = tankersdk_identity.crypto.generichash(
+        hash_salt + identity["value"].encode(), size=tankersdk_identity.BLOCK_HASH_SIZE
+    )
+
+    assert public_identity["trustchain_id"] == test_app["id"]
+    assert public_identity["target"] == "hashed_phone_number"
+    assert public_identity["value"] == base64.b64encode(hashed_number).decode()
     assert public_identity["public_signature_key"] == identity["public_signature_key"]
     assert public_identity["public_encryption_key"] == identity["public_encryption_key"]
 
@@ -102,4 +130,14 @@ def test_mistmatch_app_id_and_secret(test_app: Dict[str, str]) -> None:
     with pytest.raises(ValueError):
         tankersdk_identity.create_identity(
             mismatching_app_id, test_app["secret"], user_id
+        )
+
+
+def test_invalid_provisional_target(test_app: Dict[str, str]) -> None:
+    with pytest.raises(ValueError):
+        tankersdk_identity.create_provisional_identity(
+            test_app["id"], "extremely invalid", "value"
+        )
+        tankersdk_identity.create_provisional_identity(
+            test_app["id"], "extremely invalid", "value"
         )
