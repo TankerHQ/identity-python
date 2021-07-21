@@ -138,6 +138,3 @@ def test_invalid_provisional_target(test_app: Dict[str, str]) -> None:
         tankersdk_identity.create_provisional_identity(
             test_app["id"], "extremely invalid", "value"
         )
-        tankersdk_identity.create_provisional_identity(
-            test_app["id"], "extremely invalid", "value"
-        )
