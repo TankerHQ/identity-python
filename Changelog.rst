@@ -1,3 +1,15 @@
+3.0.0
+=====
+
+Please read the `migration guide <https://docs.tanker.io/latest/release-notes/identity/python/guide/>`_ before upgrading to this version if you use the provisional identity feature.
+Refer to the `compatibility table <https://docs.tanker.io/latest/guides/manage-sdk-versions/#identity_sdk_compatibility_table>`_
+for more information on compatible Core SDK versions after this upgrade.
+
+- API break: The createProvisionalIdentity function now takes an additional argument
+- It is now possible to create provisional identities targeting phone numbers
+- Introduce upgrade to new deterministic identity format
+- Email addresses in public provisional identities will now be hashed
+
 2.16.1
 ======
 
