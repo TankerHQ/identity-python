@@ -4,7 +4,7 @@ import pytest
 
 @pytest.fixture
 def test_app() -> Dict[str, str]:
-    """ Note: this was generated with the Javascript SDK. We keep it to check Javascript
+    """Note: this was generated with the Javascript SDK. We keep it to check Javascript
     and Python code are interoperable
 
     """
