@@ -1,7 +1,7 @@
 name: safety
 on:
   schedule:
-    - cron:  '0 1 * * *'
+    - cron: '0 1 * * *'
 
 jobs:
   safety:
@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.7]
+        python-version: ['3.7']
     steps:
       - uses: actions/checkout@v1
 
