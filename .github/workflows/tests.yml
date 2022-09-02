@@ -25,9 +25,7 @@ jobs:
         run: python -m poetry install
 
       - name: Run tests
-        run: python -m poetry run pytest
+        run: python -m poetry run pytest --cov tankersdk_identity
 
-      - name: Send coverage
-        run: python -m poetry run codecov
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
