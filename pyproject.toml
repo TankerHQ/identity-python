@@ -2,7 +2,7 @@
 name = "tankersdk-identity"
 version = "0.0.0"
 description = "Tanker identity library"
-authors = ["Tanker team <tech@tanker.io>"]
+authors = ["Tanker team"]
 homepage = "https://github.com/TankerHQ/identity-python"
 readme = "README.rst"
 
