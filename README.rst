@@ -42,10 +42,11 @@ API
 Create a new Tanker identity. This identity is secret and must only be given to a user who has been authenticated by your application. This identity is used by the Tanker client SDK to open a Tanker session
 
 **app_id**
-   The app ID. You can access it from the `Tanker dashboard <https://dashboard.tanker.io>`_.
+   The app ID, must match the one used in the constructor of the Core SDK.
 
 **app_secret**
-   The app secret. A secret that you have saved right after the creation of your app.
+   The app secret, secret that you have saved right after the creation of your app.
+
 **user_id**
    The ID of a user in your application.
 
@@ -56,7 +57,7 @@ Create a new Tanker identity. This identity is secret and must only be given to 
 Create a Tanker provisional identity. It allows you to share a resource with a user who does not have an account in your application yet.
 
 **app_id**
-   The app ID. You can access it from the `Tanker dashboard <https://dashboard.tanker.io>`_.
+   The app ID, must match the one used in the constructor of the Core SDK.
 
 **email**
    The email of the potential recipient of the resource.
