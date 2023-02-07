@@ -1,3 +1,5 @@
+<a href="#readme"><img src="https://tanker.io/images/github-logo.png" alt="Tanker logo" width="175" /></a>
+
 [![Actions status](https://github.com/TankerHQ/identity-python/workflows/tests/badge.svg)](https://github.com/TankerHQ/identity-python/actions)
 [![PyPi package](https://img.shields.io/pypi/v/tankersdk_identity.svg)](https://pypi.org/project/tankersdk_identity)
 [![Coverage](https://img.shields.io/codecov/c/github/TankerHQ/identity-python.svg?label=Coverage)](https://codecov.io/gh/TankerHQ/identity-python)
