@@ -4,7 +4,7 @@ version = "0.0.0"
 description = "Tanker identity library"
 authors = ["Tanker team"]
 homepage = "https://github.com/TankerHQ/identity-python"
-readme = "README.rst"
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.7"
