@@ -1,4 +1,4 @@
-<a href="#readme"><img src="https://tanker.io/images/github-logo.png" alt="Tanker logo" width="175" /></a>
+<a href="#readme"><img src="https://raw.githubusercontent.com/TankerHQ/spec/master/img/tanker-logotype-blue-nomargin-350.png" alt="Tanker logo" width="175" /></a>
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Actions status](https://github.com/TankerHQ/identity-python/workflows/tests/badge.svg)](https://github.com/TankerHQ/identity-python/actions)
