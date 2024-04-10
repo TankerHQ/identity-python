@@ -7,7 +7,7 @@ homepage = "https://github.com/TankerHQ/identity-python"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 PyNacl = "1.5.0"
 
 [tool.poetry.dev-dependencies]
