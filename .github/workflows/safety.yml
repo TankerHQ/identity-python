@@ -26,5 +26,6 @@ jobs:
       - name: Prepare project for development
         run: python -m poetry install
 
+      # NOTE: Ignore issue 70612 in all versions of Jinja2 (not affected)
       - name: Run safety dependency check
-        run: python -m poetry run safety check --full-report
+        run: python -m poetry run safety check --full-report -i 70612
